@@ -19,6 +19,15 @@
 ]]></content>
   </entry>
   <entry>
+    <title>这是在测试</title>
+    <url>/2023/09/e5cb20f8607e.html</url>
+    <content><![CDATA[<h1 id="test-my-blog"><a href="#test-my-blog" class="headerlink" title="test my blog"></a>test my blog</h1><p>阅读全文设置<br>1.配置主题_config.yml<br>‘’’</p>
+<h1 id="Automatically-excerpt-description-in-homepage-as-preamble-text-自动摘要"><a href="#Automatically-excerpt-description-in-homepage-as-preamble-text-自动摘要" class="headerlink" title="Automatically excerpt description in homepage as preamble text.  自动摘要"></a>Automatically excerpt description in homepage as preamble text.  自动摘要</h1><p>excerpt_description: true</p>
+<h1 id="Read-more-button"><a href="#Read-more-button" class="headerlink" title="Read more button"></a>Read more button</h1><h1 id="If-true-the-read-more-button-will-be-displayed-in-excerpt-section-显示阅读全文按钮"><a href="#If-true-the-read-more-button-will-be-displayed-in-excerpt-section-显示阅读全文按钮" class="headerlink" title="If true, the read more button will be displayed in excerpt section. 显示阅读全文按钮"></a>If true, the read more button will be displayed in excerpt section. 显示阅读全文按钮</h1><p>read_more_btn: true<br>2.install 自动摘录生成器<br>npm install hexo-excerpt –save<br>比较不好的一点是这个只能自动读取摘要 不是很智能 ，读取的摘要狠多 ，推荐编写文章时自己设置摘要<br>‘’’</p>
+<h1 id="test-my-blog-1"><a href="#test-my-blog-1" class="headerlink" title="test my blog"></a>test my blog</h1><p>test my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blog</p>
+]]></content>
+  </entry>
+  <entry>
     <title>C++基础之指针</title>
     <url>/2021/06/315ec67734e1.html</url>
     <content><![CDATA[<p>[toc]</p>
@@ -32,14 +41,5 @@
       <tags>
         <tag>C++</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>这是在测试</title>
-    <url>/2023/09/e5cb20f8607e.html</url>
-    <content><![CDATA[<h1 id="test-my-blog"><a href="#test-my-blog" class="headerlink" title="test my blog"></a>test my blog</h1><p>阅读全文设置<br>1.配置主题_config.yml<br>‘’’</p>
-<h1 id="Automatically-excerpt-description-in-homepage-as-preamble-text-自动摘要"><a href="#Automatically-excerpt-description-in-homepage-as-preamble-text-自动摘要" class="headerlink" title="Automatically excerpt description in homepage as preamble text.  自动摘要"></a>Automatically excerpt description in homepage as preamble text.  自动摘要</h1><p>excerpt_description: true</p>
-<h1 id="Read-more-button"><a href="#Read-more-button" class="headerlink" title="Read more button"></a>Read more button</h1><h1 id="If-true-the-read-more-button-will-be-displayed-in-excerpt-section-显示阅读全文按钮"><a href="#If-true-the-read-more-button-will-be-displayed-in-excerpt-section-显示阅读全文按钮" class="headerlink" title="If true, the read more button will be displayed in excerpt section. 显示阅读全文按钮"></a>If true, the read more button will be displayed in excerpt section. 显示阅读全文按钮</h1><p>read_more_btn: true<br>2.install 自动摘录生成器<br>npm install hexo-excerpt –save<br>比较不好的一点是这个只能自动读取摘要 不是很智能 ，读取的摘要狠多 ，推荐编写文章时自己设置摘要<br>‘’’</p>
-<h1 id="test-my-blog-1"><a href="#test-my-blog-1" class="headerlink" title="test my blog"></a>test my blog</h1><p>test my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blogtest my blogtest my blog<br>test my blog</p>
-]]></content>
   </entry>
 </search>
