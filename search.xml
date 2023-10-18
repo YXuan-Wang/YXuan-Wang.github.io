@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>这是在测试</title>
-    <url>/2023/09/e5cb20f8607e.html</url>
-    <content><![CDATA[<h1 id="test-my-blog"><a href="#test-my-blog" class="headerlink" title="test my blog"></a>test my blog</h1><p>test my blogtest my blog</p>
-]]></content>
-      <categories>
-        <category>零零碎碎</category>
-      </categories>
-  </entry>
-  <entry>
     <title>C++基础之指针</title>
     <url>/2021/06/315ec67734e1.html</url>
     <content><![CDATA[<p>[toc]</p>
@@ -22,6 +13,79 @@
       </categories>
       <tags>
         <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这是在测试</title>
+    <url>/2023/09/e5cb20f8607e.html</url>
+    <content><![CDATA[<h1 id="test-my-blog"><a href="#test-my-blog" class="headerlink" title="test my blog"></a>test my blog</h1><p>test my blogtest my blog</p>
+]]></content>
+      <categories>
+        <category>零零碎碎</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>C++语法之priority_queue自定义大小根堆</title>
+    <url>/2023/10/88d00eb25e82.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;priority_queue&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="基础调用API"><a href="#基础调用API" class="headerlink" title="基础调用API"></a>基础调用API</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	priority_queue&lt;<span class="type">int</span>&gt; q1;<span class="comment">//默认大根堆</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, less&lt;<span class="type">int</span>&gt; &gt; q2;<span class="comment">//完全体的大根堆，和上述一致</span></span><br><span class="line">	priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt; &gt; q3;<span class="comment">//小根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="进阶思考，自定义数据类型"><a href="#进阶思考，自定义数据类型" class="headerlink" title="进阶思考，自定义数据类型"></a>进阶思考，自定义数据类型</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    <span class="built_in">ListNode</span>() : <span class="built_in">val</span>(<span class="number">0</span>), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x, ListNode *next) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(next) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp1</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &gt; b-&gt;val; <span class="comment">//是&gt; 而不是&lt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp2</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &lt; b-&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp1&gt; q4;<span class="comment">//自定义小根堆</span></span><br><span class="line">	priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp2&gt; q5;<span class="comment">//自定义大根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++基础知识</title>
+    <url>/2023/06/8ae987bd8514.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="问题部分"><a href="#问题部分" class="headerlink" title="问题部分"></a>问题部分</h2><h3 id="1-说说include头文件的顺序以及双引号””和尖括号的区别"><a href="#1-说说include头文件的顺序以及双引号””和尖括号的区别" class="headerlink" title="1.说说include头文件的顺序以及双引号””和尖括号&lt;&gt;的区别"></a>1.说说include头文件的顺序以及双引号””和尖括号&lt;&gt;的区别</h3><blockquote>
+<p><a href="#1">参考答案</a></p>
+</blockquote>
+<h3 id="2-导入C函数的关键字是什么，C-编译时和C有什么不同？"><a href="#2-导入C函数的关键字是什么，C-编译时和C有什么不同？" class="headerlink" title="2.导入C函数的关键字是什么，C++编译时和C有什么不同？"></a>2.导入C函数的关键字是什么，C++编译时和C有什么不同？</h3><blockquote>
+<p><a href="#2">参考答案</a></p>
+</blockquote>
+<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><blockquote>
+<p><a href="#3">参考答案</a></p>
+</blockquote>
+<h2 id="答案部分，仅供参考"><a href="#答案部分，仅供参考" class="headerlink" title="答案部分，仅供参考"></a>答案部分，仅供参考</h2><p id='1'></p> <!-- 设定锚点跳转//这是可以多段的注释 -->
+
+<h3 id="答案1-说说include头文件的顺序以及双引号””和尖括号的区别"><a href="#答案1-说说include头文件的顺序以及双引号””和尖括号的区别" class="headerlink" title="答案1.说说include头文件的顺序以及双引号””和尖括号&lt;&gt;的区别"></a>答案1.说说include头文件的顺序以及双引号””和尖括号&lt;&gt;的区别</h3><p><strong>区别</strong>：</p>
+<ul>
+<li>（1）尖括号&lt;&gt;的头文件是系统文件，双引号””的头文件是自定义文件。</li>
+<li>（2）编译器预处理阶段查找头文件的路径不一样。</li>
+</ul>
+<p><strong>查找路径</strong>：</p>
+<ul>
+<li>（1）使用尖括号&lt;&gt;的头文件的查找路径：编译器设置的头文件路径–&gt;系统变量。</li>
+<li>（2）使用双引号””的头文件的查找路径：当前头文件目录–&gt;编译器设置的头文件路径–&gt;系统变量。</li>
+</ul>
+<p id='2'></p> <!-- 设定锚点跳转//这是可以多段的注释 -->
+
+<h3 id="答案2-导入C函数的关键字是什么，C-编译时和C有什么不同？"><a href="#答案2-导入C函数的关键字是什么，C-编译时和C有什么不同？" class="headerlink" title="答案2.导入C函数的关键字是什么，C++编译时和C有什么不同？"></a>答案2.导入C函数的关键字是什么，C++编译时和C有什么不同？</h3><ul>
+<li><strong>关键字</strong>：在C++中，导入C函数的关键字是<strong>extern</strong>，表达形式为**extern “C”**， extern “C”的主要作用就是为了能够正确实现C++代码调用其他C语言代码。加上extern “C”后，会指示编译器这部分代码按C语言的进行编译，而不是C++的。</li>
+<li><strong>编译区别</strong>：由于C++支持函数重载，因此编译器编译函数的过程中会将函数的<strong>参数类型</strong>也加到编译后的代码中，而不仅仅是<strong>函数名</strong>；而C语言并不支持函数重载，因此编译C语言代码的函数时<strong>不会</strong>带上函数的<strong>参数类型</strong>，一般只包括<strong>函数名</strong>。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//extern示例</span></span><br><span class="line"><span class="comment">//在C++程序里边声明该函数，会指示编译器这部分代码按C语言的进行编译</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function"><span class="type">int</span> <span class="title">strcmp</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *s1, <span class="type">const</span> <span class="type">char</span> *s2)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在C++程序里边声明该函数</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span><span class="comment">//string.h里边包含了要调用的C函数的声明</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//两种不同的语言，有着不同的编译规则，比如一个函数fun，可能C语言编译的时候为_fun，而C++则是__fun__</span></span><br></pre></td></tr></table></figure>
+
+
+<p id='3'></p> <!-- 设定锚点跳转//这是可以多段的注释 -->
+
+<h3 id="答案3"><a href="#答案3" class="headerlink" title="答案3"></a>答案3</h3>]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
 </search>
