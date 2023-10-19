@@ -53,8 +53,11 @@
 <h3 id="2-导入C函数的关键字是什么，C-编译时和C有什么不同？"><a href="#2-导入C函数的关键字是什么，C-编译时和C有什么不同？" class="headerlink" title="2.导入C函数的关键字是什么，C++编译时和C有什么不同？"></a>2.导入C函数的关键字是什么，C++编译时和C有什么不同？</h3><blockquote>
 <p><a href="#2">参考答案</a></p>
 </blockquote>
-<h3 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h3><blockquote>
+<h3 id="3-C-中前置操作性能一定优于后置操作吗？"><a href="#3-C-中前置操作性能一定优于后置操作吗？" class="headerlink" title="3.C++中前置操作性能一定优于后置操作吗？"></a>3.C++中前置操作性能一定优于后置操作吗？</h3><blockquote>
 <p><a href="#3">参考答案</a></p>
+</blockquote>
+<h3 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h3><blockquote>
+<p><a href="#4">参考答案</a></p>
 </blockquote>
 <h2 id="答案部分，仅供参考"><a href="#答案部分，仅供参考" class="headerlink" title="答案部分，仅供参考"></a>答案部分，仅供参考</h2><p id='1'></p> <!-- 设定锚点跳转//这是可以多段的注释 -->
 
@@ -79,7 +82,19 @@
 
 <p id='3'></p> <!-- 设定锚点跳转//这是可以多段的注释 -->
 
-<h3 id="答案3"><a href="#答案3" class="headerlink" title="答案3"></a>答案3</h3>]]></content>
+<h3 id="答案3-C-中前置操作性能一定优于后置操作吗？"><a href="#答案3-C-中前置操作性能一定优于后置操作吗？" class="headerlink" title="答案3.C++中前置操作性能一定优于后置操作吗？"></a>答案3.C++中前置操作性能一定优于后置操作吗？</h3><blockquote>
+<p><a href="https://m.elecfans.com/article/1929824.html">详细参考链接</a></p>
+</blockquote>
+<p><strong>结论</strong>：</p>
+<ul>
+<li>原理来说：前置操作遵循的规则是change-then-use，而后置操作遵循的规则是use-then-change。所以，前置操作就地修改对象；后置操作的时候，会使得编译器在实现该操作的时候，先把之前的值进行拷贝备份，然后对值进行更改操作，最后返回之前备份的值。因此，后置操作会产生临时变量，而前置操作不会。</li>
+<li>对于内置类型，前置操作和后置操作二者在性能上无差异，这是因为编译器会对其进行优化。</li>
+<li>对于自定义类型，前置操作的性能远优于后置操作。除非必须使用i++以满足编码场景，否则，在任何情况下都建议使用++i这种前置操作。</li>
+<li>很多人都会认为前置操作性能优于后置操作，这是错误的观点，在此进行下纠正，准确的说法应该是前置操作不会比后置操作性能差。</li>
+</ul>
+<p id='4'></p> <!-- 设定锚点跳转//这是可以多段的注释 -->
+
+<h3 id="答案4"><a href="#答案4" class="headerlink" title="答案4"></a>答案4</h3>]]></content>
       <categories>
         <category>C++</category>
       </categories>
