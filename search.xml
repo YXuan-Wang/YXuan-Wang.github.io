@@ -148,4 +148,90 @@
         <tag>刷题</tag>
       </tags>
   </entry>
+  <entry>
+    <title>有限状态自动机</title>
+    <url>/2023/11/261d7fd3675f.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="定义——有限自动机"><a href="#定义——有限自动机" class="headerlink" title="定义——有限自动机"></a>定义——有限自动机</h2><blockquote>
+<p>有限状态机（Finite-state machine, FSM），又称有限状态自动机，简称状态机，是表示有限个状态以及在这些状态之间的转移和动作等行为的数学模型。<br>有限状态机可以将复杂的逻辑简化为有限个稳定状态，在稳定状态中判断事件。其中有限不是指有限次处理，而是有限个稳定状态。</p>
+</blockquote>
+<p>有限状态机是一种用来进行对象行为建模的工具，其作用主要是描述对象在它的生命周期内所经历的状态序列，以及如何响应来自外界的各种事件。</p>
+<p>在计算机科学中，有限状态机被广泛用于建模应用行为、硬件电路系统设计、软件工程，编译器、网络协议、和计算与语言的研究。</p>
+<p><strong>有限状态机在日常中也随处可见:</strong></p>
+<ul>
+<li>红绿灯控制系统：主干道、支干道的黄灯、红灯、绿灯交替显示；</li>
+<li>地铁入口的门禁闸机：只有被闸机接受的刷卡行为，闸机才会将关闭状态变为开启状态；</li>
+<li>自动售卖机，只有投入合适的硬币，售卖机才会吐出相应的产品；</li>
+<li>密码箱，只有输入正确的密码序列，密码箱才会变为开启状态。</li>
+</ul>
+<p><strong>状态机的要素</strong><br>状态机的本质是有向图：包括节点和路径。</p>
+<ul>
+<li>节点表示状态，路径表示状态迁移。</li>
+</ul>
+<p>大多状态机在路径上会增加一些附加信息来表明状态迁移的细节：条件 &#x2F; 动作。前者表示引起状态迁移的事件，后者表示与该状态迁移相关联的动作。</p>
+<p>比如：地铁入口的门禁闸机，在用户刷卡后，如果接受，则闸机会打开闸门。这里的“用户刷卡”就是“条件”，“闸机会打开闸门”就是动作。</p>
+<p>状态机可归纳为<strong>6个要素</strong>，即<strong>活跃状态（现态）</strong>、<strong>输入事件（条件）</strong>、<strong>输出事件（动作）</strong>、<strong>次态</strong>、<strong>初始</strong>和<strong>终止状态</strong>。“活跃状态”和“条件”是因，“动作”和“次态”是果。详解如下：</p>
+<ul>
+<li>活跃状态，也叫现态：是指当前所处的状态。任何时候，只有一个状态能够成为活跃状态；</li>
+<li>输入事件：又称为“条件”。当一个条件被满足，将会触发一个动作，或者执行一次状态的迁移；</li>
+<li>输出事件：又称为“动作”，条件满足后执行的动作。动作执行完毕后，可以迁移到新的状态，也可以仍旧保持原状态。动作不是必需的，当条件满足后，也可以不执行任何动作，直接迁移到新状态；</li>
+<li>次态：条件满足后要迁往的新状态。“次态”是相对于“活跃状态”而言的，“次态”一旦被激活，就转变成新的“活跃状态”了；</li>
+<li>初始状态：即没有状态转入的状态。只有一个初始状态</li>
+<li>终止状态：即没有状态转出的状态。只有一个终止状态</li>
+</ul>
+<p>可以用 <strong>迁移状态表</strong> 表示整个过程，如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">活跃状态 \ 输入&#x2F;输出</th>
+<th align="center">触发条件1&#x2F;[执行动作1]</th>
+<th align="center">触发条件2&#x2F;[执行动作2]</th>
+<th align="center">…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">初始状态</td>
+<td align="center">中间状态1</td>
+<td align="center">中间状态2</td>
+<td align="center">中间状态…</td>
+</tr>
+<tr>
+<td align="center">中间状态1</td>
+<td align="center">中间状态x</td>
+<td align="center">中间状态x</td>
+<td align="center">中间状态…</td>
+</tr>
+<tr>
+<td align="center">中间状态2</td>
+<td align="center">中间状态x</td>
+<td align="center">中间状态x</td>
+<td align="center">中间状态…</td>
+</tr>
+<tr>
+<td align="center">中间状态…</td>
+<td align="center">中间状态x</td>
+<td align="center">中间状态x</td>
+<td align="center">中间状态…</td>
+</tr>
+</tbody></table>
+<p><strong>有限状态机分类</strong><br>主要有 <strong>接收器（acceptors）</strong> 和 <strong>转换器（transducers）</strong> 两种。转换器（transducers）依据状态和输入的关系，又分为两种：<strong>moore 状态机</strong>和 <strong>mealy 状态机</strong>。</p>
+<ul>
+<li><p><strong>接收器（acceptors）</strong><br>接收器是指产生一个二值的输出，指示接收的输入是否能被接受。比如地铁入口的门禁闸机，在用户刷卡后决定是否打开闸门放行</p>
+</li>
+<li><p><strong>transducers(转换器)</strong><br>转换器（moore 状态机和 mealy 状态机）一般输出会受输入序列顺序影响，mealy 状态机还会受当前状态影响。我们一般看到的状态机大部分是 mealy 状态机。</p>
+</li>
+</ul>
+<h2 id="力扣8-字符串转换整数-atoi-官方代码参考"><a href="#力扣8-字符串转换整数-atoi-官方代码参考" class="headerlink" title="力扣8.字符串转换整数 (atoi)官方代码参考"></a>力扣8.字符串转换整数 (atoi)官方代码参考</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Automaton</span> &#123;</span><br><span class="line">    string state = <span class="string">&quot;start&quot;</span>;</span><br><span class="line">    unordered_map&lt;string, vector&lt;string&gt;&gt; table = &#123;</span><br><span class="line">        &#123;<span class="string">&quot;start&quot;</span>, &#123;<span class="string">&quot;start&quot;</span>, <span class="string">&quot;signed&quot;</span>, <span class="string">&quot;in_number&quot;</span>, <span class="string">&quot;end&quot;</span>&#125;&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;signed&quot;</span>, &#123;<span class="string">&quot;end&quot;</span>, <span class="string">&quot;end&quot;</span>, <span class="string">&quot;in_number&quot;</span>, <span class="string">&quot;end&quot;</span>&#125;&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;in_number&quot;</span>, &#123;<span class="string">&quot;end&quot;</span>, <span class="string">&quot;end&quot;</span>, <span class="string">&quot;in_number&quot;</span>, <span class="string">&quot;end&quot;</span>&#125;&#125;,</span><br><span class="line">        &#123;<span class="string">&quot;end&quot;</span>, &#123;<span class="string">&quot;end&quot;</span>, <span class="string">&quot;end&quot;</span>, <span class="string">&quot;end&quot;</span>, <span class="string">&quot;end&quot;</span>&#125;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">get_col</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isspace</span>(c)) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="string">&#x27;+&#x27;</span> <span class="keyword">or</span> c == <span class="string">&#x27;-&#x27;</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">isdigit</span>(c)) <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> sign = <span class="number">1</span>;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">get</span><span class="params">(<span class="type">char</span> c)</span> </span>&#123;</span><br><span class="line">        state = table[state][<span class="built_in">get_col</span>(c)];</span><br><span class="line">        <span class="keyword">if</span> (state == <span class="string">&quot;in_number&quot;</span>) &#123;</span><br><span class="line">            ans = ans * <span class="number">10</span> + c - <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">            ans = sign == <span class="number">1</span> ? <span class="built_in">min</span>(ans, (<span class="type">long</span> <span class="type">long</span>)INT_MAX) : <span class="built_in">min</span>(ans, -(<span class="type">long</span> <span class="type">long</span>)INT_MIN);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (state == <span class="string">&quot;signed&quot;</span>)</span><br><span class="line">            sign = c == <span class="string">&#x27;+&#x27;</span> ? <span class="number">1</span> : <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">myAtoi</span><span class="params">(string str)</span> </span>&#123;</span><br><span class="line">        Automaton automaton;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c : str)</span><br><span class="line">            automaton.<span class="built_in">get</span>(c);</span><br><span class="line">        <span class="keyword">return</span> automaton.sign * automaton.ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://zhuanlan.zhihu.com/p/651128045">编程——有限自动机 - leancode的文章 - 知乎</a><br><a href="https://leetcode.cn/problems/string-to-integer-atoi/solutions/183164/zi-fu-chuan-zhuan-huan-zheng-shu-atoi-by-leetcode-/">leetcode8.字符串转换整数 (atoi)</a></p>
+]]></content>
+      <categories>
+        <category>编程的额外知识</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
 </search>
