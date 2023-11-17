@@ -234,4 +234,72 @@
         <tag>刷题</tag>
       </tags>
   </entry>
+  <entry>
+    <title>markdown语法</title>
+    <url>/2023/11/91fba8963d27.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="使用的工具："><a href="#使用的工具：" class="headerlink" title="使用的工具："></a>使用的工具：</h2><p><a href="https://typoraio.cn/">typora官网</a></p>
+<p><a href="https://support.typoraio.cn/zh/Markdown-Reference/">typora官方学习markdown手册</a></p>
+<p><a href="https://www.cnblogs.com/KoiC/p/17073950.html">仅供学习参考使用的免费typora</a></p>
+<h2 id="常用typora快捷键："><a href="#常用typora快捷键：" class="headerlink" title="常用typora快捷键："></a>常用typora快捷键：</h2><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CTRL+K</td>
+<td>插入超链接</td>
+</tr>
+<tr>
+<td>CTRL+T</td>
+<td>插入表格</td>
+</tr>
+<tr>
+<td>CTRL+Enter</td>
+<td>表格里下方插入一行</td>
+</tr>
+<tr>
+<td>CTRL+B</td>
+<td>字体加粗</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CTRL+Shift+[</td>
+<td>有序列表</td>
+</tr>
+<tr>
+<td>CTRL+Shift+]</td>
+<td>无序列表</td>
+</tr>
+<tr>
+<td>CTRL+Shift+K</td>
+<td>代码块</td>
+</tr>
+<tr>
+<td>CTRL+Shift+M</td>
+<td>公式块（理解为：math）</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="后续进行补充"><a href="#后续进行补充" class="headerlink" title="后续进行补充"></a>后续进行补充</h2><p>暂时完结</p>
+]]></content>
+      <categories>
+        <category>工具相关</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
 </search>
