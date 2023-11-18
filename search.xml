@@ -302,4 +302,51 @@
         <tag>工具</tag>
       </tags>
   </entry>
+  <entry>
+    <title>记录一道有意思的算法题</title>
+    <url>/2023/11/ffae31d2f853.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。-字节"><a href="#给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。-字节" class="headerlink" title="给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。#字节#"></a>给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。#字节#</h2><blockquote>
+<ol>
+<li><p>要求使用O(1)空间内解决该问题</p>
+</li>
+<li><p>解决交换的次数越多随机数随到已经交换的下标的可能性越大的问题</p>
+<p>该算法已有标准实现，可以自己看看</p>
+</li>
+</ol>
+</blockquote>
+<p>单纯从题目不加限制条件的角度来做，可以想到暴力法。标准实现还得看洗牌算法。</p>
+<ol>
+<li><strong>暴力法</strong>:申请另一个数组</li>
+<li><strong>Fisher-Yates 洗牌算法</strong>：</li>
+</ol>
+<blockquote>
+<p>我们可以在移除 <code>waiting</code> 的第 <code>k</code>个元素时，将第 <code>k</code>个元素与数组的最后 <code>1</code>个元素交换，然后移除交换后数组的最后 <code>1</code>个元素，这样我们只需要 <code>O(1)</code> 的时间复杂度即可完成移除第 <code>k</code> 个元素的操作。此时，被移除的交换后数组的最后 <code>1</code> 个元素即为我们根据随机下标获取的元素。</p>
+<p>在此基础上，我们也可以不移除最后 <code>1</code> 个元素，而直接将其作为乱序后的结果，并更新待乱序数组的长度，从而实现数组的原地乱序。因为我们不再需要从数组中移除元素，所以也可以将第 <code>k</code> 个元素与第 <code>1</code> 个元素交换。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">代码同下</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>Knuth 洗牌算法</strong>：</li>
+</ol>
+<blockquote>
+<p>在 <code>O(n)</code> 复杂度内等概率返回某个方案。</p>
+<p>具体的，我们从前往后尝试填充 <code>[0,n−1]</code> 该填入什么数时，通过随机当前下标与（剩余的）哪个下标进行值交换来实现。</p>
+<p>对于下标 <code>x</code> 而言，我们从 <code>[x,n−1]</code> 中随机出一个位置与 <code>x</code> 进行值交换，当所有位置都进行这样的处理后，我们便得到了一个公平的洗牌方案。</p>
+<p>这样能确保每个元素在每个位置的概率都是<code>1/n</code>。 </p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Solution</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;nums = nums;</span><br><span class="line">        <span class="keyword">this</span>-&gt;original.<span class="built_in">resize</span>(nums.<span class="built_in">size</span>());</span><br><span class="line">        <span class="built_in">copy</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), original.<span class="built_in">begin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">reset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">copy</span>(original.<span class="built_in">begin</span>(), original.<span class="built_in">end</span>(), nums.<span class="built_in">begin</span>());</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">shuffle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="type">int</span> j = i + <span class="built_in">rand</span>() % (nums.<span class="built_in">size</span>() - i);</span><br><span class="line">            <span class="built_in">swap</span>(nums[i], nums[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; nums;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; original;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>解答参考链接：</p>
+<p>[1]:<a href="https://blog.csdn.net/cy973071263/article/details/128818181">https://blog.csdn.net/cy973071263/article/details/128818181</a>	“参考链接1”<br>[2]:<a href="https://blog.csdn.net/defaultbyzt/article/details/128628119">https://blog.csdn.net/defaultbyzt/article/details/128628119</a>	“参考链接2”<br>[3]:<a href="https://www.bilibili.com/read/cv26024350/">https://www.bilibili.com/read/cv26024350/</a>	“参考链接3”<br>[4]:<a href="https://leetcode.cn/problems/shuffle-an-array/">https://leetcode.cn/problems/shuffle-an-array/</a>	“参考链接4”</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
 </search>
