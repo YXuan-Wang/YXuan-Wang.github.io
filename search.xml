@@ -349,4 +349,40 @@
         <tag>刷题</tag>
       </tags>
   </entry>
+  <entry>
+    <title>如何解决TCP粘包问题</title>
+    <url>/2023/11/8c2faec0a14b.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="TCP粘包问题"><a href="#TCP粘包问题" class="headerlink" title="TCP粘包问题"></a>TCP粘包问题</h2><ul>
+<li>TCP数据粘包是指发送方连续发送多个数据包时，接收方在接收时会将多个数据包粘成一个大的数据包，造成数据处理上的困难。</li>
+<li>首先回忆一下，TCP的三大特点：面向连接、可靠的、基于字节流的。</li>
+<li>显然，问题出在<code>TCP是基于字节流的</code>，所以并不会明确TCP包的边界。而UDP是基于包的，所以不会出现这个问题。</li>
+</ul>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
+<p>总的原则：既然没有边界，那么加上边界识别的机制那就完活了。</p>
+</blockquote>
+<ol>
+<li><p>设置消息边界：在消息的末尾添加特殊字符或者标志符号，在接收方收到消息时根据特殊字符或标志符号来分隔消息。</p>
+</li>
+<li><p>消息长度：在消息的开头添加消息长度信息，在接收方接收到消息时先读取消息长度，再读取对应长度的消息内容。</p>
+</li>
+<li><p>延迟发送：发送方在发送数据时，可以采用延迟发送的方式，即等待一段时间再发送，以此避免多个数据包同时发送造成粘包。</p>
+</li>
+<li><p>使用固定长度的数据包：发送方发送固定长度的数据包，接收方按照固定长度来接收数据包，以此避免粘包问题。 </p>
+<p>举例：在Qt中，可以通过设置socket的读取缓存区大小、设置消息边界符号、消息长度信息等方式来防止TCP数据粘包。例如，可以使用以下代码设置消息边界符号：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QTcpSocket *socket = <span class="keyword">new</span> <span class="built_in">QTcpSocket</span>(<span class="keyword">this</span>);</span><br><span class="line">socket-&gt;<span class="built_in">setReadBufferSize</span>(<span class="number">1024</span>); <span class="comment">//设置读取缓存区大小为1024字节</span></span><br><span class="line">socket-&gt;<span class="built_in">write</span>(<span class="string">&quot;message1\n&quot;</span>); <span class="comment">//发送消息1</span></span><br><span class="line">socket-&gt;<span class="built_in">write</span>(<span class="string">&quot;message2\n&quot;</span>); <span class="comment">//发送消息2</span></span><br></pre></td></tr></table></figure>
+
+<p>在接收方，可以使用以下代码来接收数据并根据消息边界符号分隔消息：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (socket-&gt;<span class="built_in">bytesAvailable</span>() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    QByteArray data = socket-&gt;<span class="built_in">readLine</span>(); <span class="comment">//读取一行数据</span></span><br><span class="line">    QString message = <span class="built_in">QString</span>(data).<span class="built_in">trimmed</span>(); <span class="comment">//去除换行符</span></span><br><span class="line">    <span class="comment">//处理接收到的消息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://blog.csdn.net/future_ai/article/details/130192182">https://blog.csdn.net/future_ai/article/details/130192182</a>	“参考链接1”</p>
+]]></content>
+      <categories>
+        <category>面试相关</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>项目</tag>
+      </tags>
+  </entry>
 </search>
