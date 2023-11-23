@@ -385,4 +385,23 @@
         <tag>项目</tag>
       </tags>
   </entry>
+  <entry>
+    <title>SQL语句相关问题</title>
+    <url>/2023/11/f290346388e4.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h1 id="查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字"><a href="#查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字" class="headerlink" title="查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字"></a>查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 给定成绩表t，表结构字段为(name, subject, score)</span><br><span class="line"></span><br><span class="line"># 使用子<span class="keyword">sql</span>语句</span><br><span class="line"><span class="keyword">select</span> t.<span class="operator">*</span> </span><br><span class="line"><span class="keyword">from</span> (<span class="keyword">select</span> name, <span class="built_in">max</span>(score) m <span class="keyword">from</span> t <span class="keyword">GROUP</span> <span class="keyword">BY</span> name) b, t</span><br><span class="line"><span class="keyword">where</span> t.name<span class="operator">=</span>b.name <span class="keyword">and</span> t.score<span class="operator">=</span>b.m</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>[1]:<a href="https://blog.csdn.net/zb199738/article/details/102767660">https://blog.csdn.net/zb199738/article/details/102767660</a>	“参考链接”</p>
+]]></content>
+      <categories>
+        <category>面试相关</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
 </search>
