@@ -404,4 +404,82 @@
         <tag>面试</tag>
       </tags>
   </entry>
+  <entry>
+    <title>梯度消失、梯度爆炸怎么解决</title>
+    <url>/2023/11/20b3b53ad2ba.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
+<p>梯度消失与梯度爆炸其实是一种情况，看参考链接的文章就知道了。</p>
+</blockquote>
+<p>两种情况下梯度消失经常出现，一是在<strong>深层网络</strong>中，二是采用了<strong>不合适的损失函数</strong>，比如sigmoid。梯度爆炸一般出现在深层网络和权值初始化值太大的情况下。</p>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><ol>
+<li><p>预训练加微调。</p>
+<p>此思想相当于是先寻找局部最优，然后整合起来寻找全局最优，此方法有一定的好处，但是目前应用的不是很多了。此方法来自Hinton在2006年发表的一篇论文，Hinton为了解决梯度的问题，提出采取无监督逐层训练方法，其基本思想是每次训练一层隐节点，训练时将上一层隐节点的输出作为输入，而本层隐节点的输出作为下一层隐节点的输入，此过程就是逐层“预训练”（pre-training）；在预训练完成后，再对整个网络进行“微调”（fine-tunning）。</p>
+</li>
+<li><p>梯度剪切、权重正则（针对梯度爆炸）。</p>
+<p><strong>梯度剪切</strong>这个方案主要是针对梯度爆炸提出的，其思想是设置一个梯度剪切阈值，然后更新梯度的时候，如果梯度超过这个阈值，那么就将其强制限制在这个范围之内。这可以防止梯度爆炸。</p>
+<p><strong>权重正则化</strong>（weithts regularization）比较常见的是l1正则，和l2正则，在各个深度框架中都有相应的API可以使用正则化。</p>
+</li>
+<li><p>使用不同的激活函数。</p>
+<p>relu、leakrelu、elu等激活函数。</p>
+</li>
+<li><p>使用batchnorm。</p>
+<p>Batchnorm本质上是解决反向传播过程中的梯度问题。batchnorm全名是batch normalization，简称BN，即批规范化，通过规范化操作将输出信号x规范化到均值为0，方差为1保证网络的稳定性。</p>
+</li>
+<li><p>使用残差结构。</p>
+<p>事实上，就是残差网络的出现导致了image net比赛的终结，自从残差提出后，几乎所有的深度网络都离不开残差的身影，相比较之前的几层，几十层的深度网络，在残差网络面前都不值一提，残差可以很轻松的构建几百层，一千多层的网络而不用担心梯度消失过快的问题，原因就在于残差的捷径（shortcut）部分</p>
+</li>
+<li><p>使用LSTM网络。</p>
+<p>LSTM全称是<strong>长短期记忆网络</strong>（long-short term memory networks），是不那么容易发生梯度消失的，主要原因在于LSTM内部复杂的“门”(gates)。LSTM通过它内部的“门”可以接下来更新的时候“记住”前几次训练的”残留记忆“，因此，经常用于生成文本中。目前也有基于CNN的LSTM，之后可以尝试一下。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://zhuanlan.zhihu.com/p/622605118?utm_id=0">https://zhuanlan.zhihu.com/p/622605118?utm_id=0</a>	“参考链接1”</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>过拟合和欠拟合怎么解决</title>
+    <url>/2023/11/c1a54a404412.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
+<p>过拟合和欠拟合是机器学习中常见的问题。</p>
+</blockquote>
+<ul>
+<li><strong>过拟合</strong>指的是模型过于复杂，在训练数据上表现良好，但是在新数据上表现却很差。</li>
+<li><strong>欠拟合</strong>指的是模型在训练集、验证集和测试集上均表现不佳的情况。</li>
+</ul>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
+<p>过拟合和欠拟合的解决办法较为相对，反面基本可以解决另一个问题。下面谈谈针对过拟合。</p>
+</blockquote>
+<ol>
+<li><p>增加数据量。</p>
+<p>当数据量较少时，模型容易过拟合。因此，增加数据量是解决过拟合问题的重要方法之一。如果数据集无法扩充，可以通过数据增强的方式来达到类似的效果。</p>
+</li>
+<li><p>简化模型结构。</p>
+<p>过于复杂的模型容易导致过拟合。因此，可以通过简化模型结构的方式来解决过拟合问题。例如，减少深度学习模型的层数、减少神经元数量等。此外，也可以通过增加正则化项来限制模型的复杂度。</p>
+</li>
+<li><p>采用正则化方法。</p>
+<p>正则化是一种常用的防止过拟合的方法。它通过在损失函数中加入正则化项，对模型参数进行惩罚，从而限制模型的复杂度。常见的正则化方法包括L1正则化、L2正则化等。</p>
+</li>
+<li><p>采用Dropout方法。</p>
+<p>Dropout是一种常用的防止过拟合的方法。它通过在训练过程中随机地将一些神经元的输出置为0，从而强制模型学习到多种特征表示。这样可以使得模型更加鲁棒，防止过拟合。</p>
+</li>
+<li><p>交又验证。</p>
+<p>交又验证是一种常用的评估模型性能的方法。它将数据集分为若干份每次将其中一份作为验证集，其余部分作为训练集。这样可以多次训练模型，并在验证集上进行测试，从而得到一个更加准确的模型性能评估结果。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html">https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html</a>	“参考链接1”<br>[2]:<a href="https://blog.csdn.net/m0_69082030/article/details/128175288">https://blog.csdn.net/m0_69082030/article/details/128175288</a>	“参考链接2”</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
 </search>

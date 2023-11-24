@@ -20,17 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Back-End engineer">
-<meta property="og:type" content="website">
-<meta property="og:title" content="YXuan-Wang&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/page/2/index.html">
+  <meta name="description" content="如题所示">
+<meta property="og:type" content="article">
+<meta property="og:title" content="过拟合和欠拟合怎么解决">
+<meta property="og:url" content="http://example.com/2023/11/c1a54a404412.html">
 <meta property="og:site_name" content="YXuan-Wang&#39;s Blog">
-<meta property="og:description" content="Back-End engineer">
+<meta property="og:description" content="如题所示">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-24T04:48:09.000Z">
+<meta property="article:modified_time" content="2023-11-24T14:52:36.672Z">
 <meta property="article:author" content="YXuan-Wang">
+<meta property="article:tag" content="机器学习">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/page/2/">
+<link rel="canonical" href="http://example.com/2023/11/c1a54a404412.html">
 
 
 <script id="page-configurations">
@@ -38,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | YXuan-Wang's Blog</title>
+  <title>过拟合和欠拟合怎么解决 | YXuan-Wang's Blog</title>
   
 
 
@@ -187,102 +190,149 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 13 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/c1a54a404412.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/my_logo.jpg">
+      <meta itemprop="name" content="YXuan-Wang">
+      <meta itemprop="description" content="Back-End engineer">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YXuan-Wang's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          过拟合和欠拟合怎么解决
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-11-24 12:48:09 / 修改时间：22:52:36" itemprop="dateCreated datePublished" datetime="2023-11-24T12:48:09+08:00">2023-11-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>752</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+            <div class="post-description">如题所示</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-09-25T18:01:53+08:00"
-              content="2023-09-25">
-          09-25
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/09/e5cb20f8607e.html" itemprop="url">
-            <span itemprop="name">这是在测试</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-06-05T12:06:47+08:00"
-              content="2023-06-05">
-          06-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/06/8ae987bd8514.html" itemprop="url">
-            <span itemprop="name">C++基础知识</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-    <div class="collection-year">
-      <span class="collection-header">2021</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2021-06-05T12:06:47+08:00"
-              content="2021-06-05">
-          06-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2021/06/315ec67734e1.html" itemprop="url">
-            <span itemprop="name">C++基础之指针</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <p>[TOC]</p>
+<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
+<p>过拟合和欠拟合是机器学习中常见的问题。</p>
+</blockquote>
+<ul>
+<li><strong>过拟合</strong>指的是模型过于复杂，在训练数据上表现良好，但是在新数据上表现却很差。</li>
+<li><strong>欠拟合</strong>指的是模型在训练集、验证集和测试集上均表现不佳的情况。</li>
+</ul>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
+<p>过拟合和欠拟合的解决办法较为相对，反面基本可以解决另一个问题。下面谈谈针对过拟合。</p>
+</blockquote>
+<ol>
+<li><p>增加数据量。</p>
+<p>当数据量较少时，模型容易过拟合。因此，增加数据量是解决过拟合问题的重要方法之一。如果数据集无法扩充，可以通过数据增强的方式来达到类似的效果。</p>
+</li>
+<li><p>简化模型结构。</p>
+<p>过于复杂的模型容易导致过拟合。因此，可以通过简化模型结构的方式来解决过拟合问题。例如，减少深度学习模型的层数、减少神经元数量等。此外，也可以通过增加正则化项来限制模型的复杂度。</p>
+</li>
+<li><p>采用正则化方法。</p>
+<p>正则化是一种常用的防止过拟合的方法。它通过在损失函数中加入正则化项，对模型参数进行惩罚，从而限制模型的复杂度。常见的正则化方法包括L1正则化、L2正则化等。</p>
+</li>
+<li><p>采用Dropout方法。</p>
+<p>Dropout是一种常用的防止过拟合的方法。它通过在训练过程中随机地将一些神经元的输出置为0，从而强制模型学习到多种特征表示。这样可以使得模型更加鲁棒，防止过拟合。</p>
+</li>
+<li><p>交又验证。</p>
+<p>交又验证是一种常用的评估模型性能的方法。它将数据集分为若干份每次将其中一份作为验证集，其余部分作为训练集。这样可以多次训练模型，并在验证集上进行测试，从而得到一个更加准确的模型性能评估结果。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html">https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html</a>	“参考链接1”<br>[2]:<a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_69082030/article/details/128175288">https://blog.csdn.net/m0_69082030/article/details/128175288</a>	“参考链接2”</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/11/f290346388e4.html" rel="prev" title="SQL语句相关问题">
+      <i class="fa fa-chevron-left"></i> SQL语句相关问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/11/20b3b53ad2ba.html" rel="next" title="梯度消失、梯度爆炸怎么解决">
+      梯度消失、梯度爆炸怎么解决 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-  </nav>
+  
+  
 
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -329,6 +379,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.</span> <span class="nav-text">问题的原因</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">解决的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -500,6 +551,25 @@
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '412c4e9c76ff1bbe06f0',
+      clientSecret: 'f75d966bbc2c9a9ee9c238ef8a883fef3d6d4015',
+      repo        : 'gitalk',
+      owner       : 'YXuan-Wang',
+      admin       : ['YXuan-Wang'],
+      id          : '6a57302c3e4695e4d1021e5907d4c485',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>
