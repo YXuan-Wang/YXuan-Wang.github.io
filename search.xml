@@ -528,4 +528,54 @@
         <tag>刷题</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Linux僵尸进程相关问题</title>
+    <url>/2023/11/f73dfc9b8e43.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="僵尸进程的产生："><a href="#僵尸进程的产生：" class="headerlink" title="僵尸进程的产生："></a>僵尸进程的产生：</h2><p>Linux下进程有种状态叫做僵尸状态</p>
+<p>原因是父进程<code>fork()</code>出来的子进程结束之后，内核会给父进程发送一个<code>SIGCHLD信号</code></p>
+<blockquote>
+<p>这个SIGCHLD信号的作用是，及时通知父进程子进程的退出，让父进程通过一系列手段将他回收</p>
+<p>回收的意义:</p>
+<ol>
+<li>避免僵尸进程的产生，内存泄漏</li>
+<li>且使得父进程能拿到子进程的退出状态，进行相应处理</li>
+</ol>
+</blockquote>
+<p>如果父进程没有忽略这个信号(设置SIG_IGN)，也没有等待(wait)子进程，而且结束的也比子进程晚(不能托管被init1号进程领养)，并且也没有handler捕捉这个信号，那子进程就会进入僵尸状态; 维护者自己的task_struct开销，这也是一种内存泄露;</p>
+<h2 id="解决方式："><a href="#解决方式：" class="headerlink" title="解决方式："></a>解决方式：</h2><ol>
+<li><p>父进程阻塞调用wait()。</p>
+<p>调用细节：进程一旦调用了wait，就立即<strong>阻塞自己</strong>，由wait自动分析是否当前进程的<strong>某个</strong>子进程已经退出，如果让它找到了这样一个已经变成僵尸的子进程，wait就会收集这个子进程的信息，并把它彻底销毁后返回；如果没有找到这样一个子进程，wait就会<strong>一直阻塞</strong>在这里，直到有一个出现为止。</p>
+<p>缺点：显然wait的调用是非常不合理的，阻塞时等待会让父进程干不了别的事情。</p>
+</li>
+<li><p>父进程非阻塞调用waitpid()。</p>
+<p>根据源码的观察，不难发现，其实wait就是waitpid的一种封装。</p>
+<p>缺点：waitpid虽然不会阻塞时等待，但是也需要占用cpu资源，定期的轮训waitpid看看有没有子进程处于僵尸状态，以便将他回收，也是有一定开销的。</p>
+</li>
+<li><p>SIGCHLD信号。</p>
+<blockquote>
+<p>其实我们的子进程每次终止时<strong>内核</strong>都会给父进程发送一个<strong>SIGCHLD信号</strong>，如果<strong>父进程没有处理这个信号，也没有等待(wait)子进程</strong>，那他就会进入僵尸状态</p>
+</blockquote>
+<p>既然这样，我们可以用<strong>signal()函数+waitpid()接口</strong>处理一下这个信号，答到一个子进程退出之后，主动通知父进程将其回收的<strong>异步通知作用</strong>！(显然效率是比父进程主动wait和waitpid这种同步处理高！)</p>
+<p>注意，handler中使用while循环处理回收任务的原因是:SIGCHILD是个非可靠信号！</p>
+<p>一个父进程可能有很多子进程，如果多个子进程同时退出，SIGCHILD会出现信号丢失(只存在1个)。如果用if处理，也就只处理一个子进程。剩下的子进程也就变成了僵尸进程!</p>
+<p>因此我们发现有子进程退出，就用while循环来处理，如果恰好多个子进程退出，即便信号丢失，我们也能while通过waitpid的返回值不断释放他们，即便只有一个子进程退出，第二次循环waitpid会返回0，我们也会跳出循环！</p>
+</li>
+<li><p>SIG_IGN信号。</p>
+<p>解决僵尸进程还有一个方式，就是让他变为“孤儿进程”，也就是init1号进程领养托管，进而释放这个子进程的资源！</p>
+<p>除了让父进程退出的比子进程早之外，我们可以通过如下操作，将SIGCHLD信号的处理方式设置为SIG_IGN–&gt;<strong>忽略</strong>，这样代表父进程忽视了这个信号，子进程相当于被弃养，会被init1号进程领养。</p>
+<p>这样可让内核把僵尸子进程转交给init1号进程去处理释放，省去了父进程wait这个子进程的麻烦。</p>
+<p>这个小技巧常常被用于提升并发服务器的性能！</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://blog.csdn.net/wtl666_6/article/details/129513009">https://blog.csdn.net/wtl666_6/article/details/129513009</a>	“参考资料1”</p>
+]]></content>
+      <categories>
+        <category>面试相关</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>项目</tag>
+      </tags>
+  </entry>
 </search>

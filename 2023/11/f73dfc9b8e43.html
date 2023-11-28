@@ -20,21 +20,21 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="C++语法中关于优先队列的一些基础知识，防止遗忘">
+  <meta name="description" content="Linux僵尸进程产生、解决方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++语法之priority_queue自定义大小根堆">
-<meta property="og:url" content="http://example.com/2023/10/af4bec111749.html">
+<meta property="og:title" content="Linux僵尸进程相关问题">
+<meta property="og:url" content="http://example.com/2023/11/f73dfc9b8e43.html">
 <meta property="og:site_name" content="YXuan-Wang&#39;s Blog">
-<meta property="og:description" content="C++语法中关于优先队列的一些基础知识，防止遗忘">
+<meta property="og:description" content="Linux僵尸进程产生、解决方法">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-10-18T14:48:09.000Z">
-<meta property="article:modified_time" content="2023-10-18T15:02:27.575Z">
+<meta property="article:published_time" content="2023-11-28T04:06:47.000Z">
+<meta property="article:modified_time" content="2023-11-28T08:50:42.636Z">
 <meta property="article:author" content="YXuan-Wang">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="刷题">
+<meta property="article:tag" content="面试">
+<meta property="article:tag" content="项目">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2023/10/af4bec111749.html">
+<link rel="canonical" href="http://example.com/2023/11/f73dfc9b8e43.html">
 
 
 <script id="page-configurations">
@@ -47,7 +47,7 @@
   };
 </script>
 
-  <title>C++语法之priority_queue自定义大小根堆 | YXuan-Wang's Blog</title>
+  <title>Linux僵尸进程相关问题 | YXuan-Wang's Blog</title>
   
 
 
@@ -198,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/10/af4bec111749.html">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/f73dfc9b8e43.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/my_logo.jpg">
@@ -211,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          C++语法之priority_queue自定义大小根堆
+          Linux僵尸进程相关问题
         </h1>
 
         <div class="post-meta">
@@ -222,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-10-18 22:48:09 / 修改时间：23:02:27" itemprop="dateCreated datePublished" datetime="2023-10-18T22:48:09+08:00">2023-10-18</time>
+              <time title="创建时间：2023-11-28 12:06:47 / 修改时间：16:50:42" itemprop="dateCreated datePublished" datetime="2023-11-28T12:06:47+08:00">2023-11-28</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,7 +230,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                  <a href="/categories/%E9%9D%A2%E8%AF%95%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">面试相关</span></a>
                 </span>
             </span>
 
@@ -247,7 +247,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>893</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -256,7 +256,7 @@
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>1 分钟</span>
             </span>
-            <div class="post-description">C++语法中关于优先队列的一些基础知识，防止遗忘</div>
+            <div class="post-description">Linux僵尸进程产生、解决方法</div>
 
         </div>
       </header>
@@ -268,12 +268,43 @@
 
       
         <p>[TOC]</p>
-<h2 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;priority_queue&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-<h2 id="基础调用API"><a href="#基础调用API" class="headerlink" title="基础调用API"></a>基础调用API</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    priority_queue&lt;<span class="type">int</span>&gt; q1;<span class="comment">//默认大根堆</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, less&lt;<span class="type">int</span>&gt; &gt; q2;<span class="comment">//完全体的大根堆，和上述一致</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt; &gt; q3;<span class="comment">//小根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="进阶思考，自定义数据类型"><a href="#进阶思考，自定义数据类型" class="headerlink" title="进阶思考，自定义数据类型"></a>进阶思考，自定义数据类型</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    <span class="built_in">ListNode</span>() : <span class="built_in">val</span>(<span class="number">0</span>), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x, ListNode *next) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(next) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp1</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &gt; b-&gt;val; <span class="comment">//是&gt; 而不是&lt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp2</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &lt; b-&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp1&gt; q4;<span class="comment">//自定义小根堆</span></span><br><span class="line">    priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp2&gt; q5;<span class="comment">//自定义大根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="僵尸进程的产生："><a href="#僵尸进程的产生：" class="headerlink" title="僵尸进程的产生："></a>僵尸进程的产生：</h2><p>Linux下进程有种状态叫做僵尸状态</p>
+<p>原因是父进程<code>fork()</code>出来的子进程结束之后，内核会给父进程发送一个<code>SIGCHLD信号</code></p>
+<blockquote>
+<p>这个SIGCHLD信号的作用是，及时通知父进程子进程的退出，让父进程通过一系列手段将他回收</p>
+<p>回收的意义:</p>
+<ol>
+<li>避免僵尸进程的产生，内存泄漏</li>
+<li>且使得父进程能拿到子进程的退出状态，进行相应处理</li>
+</ol>
+</blockquote>
+<p>如果父进程没有忽略这个信号(设置SIG_IGN)，也没有等待(wait)子进程，而且结束的也比子进程晚(不能托管被init1号进程领养)，并且也没有handler捕捉这个信号，那子进程就会进入僵尸状态; 维护者自己的task_struct开销，这也是一种内存泄露;</p>
+<h2 id="解决方式："><a href="#解决方式：" class="headerlink" title="解决方式："></a>解决方式：</h2><ol>
+<li><p>父进程阻塞调用wait()。</p>
+<p>调用细节：进程一旦调用了wait，就立即<strong>阻塞自己</strong>，由wait自动分析是否当前进程的<strong>某个</strong>子进程已经退出，如果让它找到了这样一个已经变成僵尸的子进程，wait就会收集这个子进程的信息，并把它彻底销毁后返回；如果没有找到这样一个子进程，wait就会<strong>一直阻塞</strong>在这里，直到有一个出现为止。</p>
+<p>缺点：显然wait的调用是非常不合理的，阻塞时等待会让父进程干不了别的事情。</p>
+</li>
+<li><p>父进程非阻塞调用waitpid()。</p>
+<p>根据源码的观察，不难发现，其实wait就是waitpid的一种封装。</p>
+<p>缺点：waitpid虽然不会阻塞时等待，但是也需要占用cpu资源，定期的轮训waitpid看看有没有子进程处于僵尸状态，以便将他回收，也是有一定开销的。</p>
+</li>
+<li><p>SIGCHLD信号。</p>
+<blockquote>
+<p>其实我们的子进程每次终止时<strong>内核</strong>都会给父进程发送一个<strong>SIGCHLD信号</strong>，如果<strong>父进程没有处理这个信号，也没有等待(wait)子进程</strong>，那他就会进入僵尸状态</p>
+</blockquote>
+<p>既然这样，我们可以用<strong>signal()函数+waitpid()接口</strong>处理一下这个信号，答到一个子进程退出之后，主动通知父进程将其回收的<strong>异步通知作用</strong>！(显然效率是比父进程主动wait和waitpid这种同步处理高！)</p>
+<p>注意，handler中使用while循环处理回收任务的原因是:SIGCHILD是个非可靠信号！</p>
+<p>一个父进程可能有很多子进程，如果多个子进程同时退出，SIGCHILD会出现信号丢失(只存在1个)。如果用if处理，也就只处理一个子进程。剩下的子进程也就变成了僵尸进程!</p>
+<p>因此我们发现有子进程退出，就用while循环来处理，如果恰好多个子进程退出，即便信号丢失，我们也能while通过waitpid的返回值不断释放他们，即便只有一个子进程退出，第二次循环waitpid会返回0，我们也会跳出循环！</p>
+</li>
+<li><p>SIG_IGN信号。</p>
+<p>解决僵尸进程还有一个方式，就是让他变为“孤儿进程”，也就是init1号进程领养托管，进而释放这个子进程的资源！</p>
+<p>除了让父进程退出的比子进程早之外，我们可以通过如下操作，将SIGCHLD信号的处理方式设置为SIG_IGN–&gt;<strong>忽略</strong>，这样代表父进程忽视了这个信号，子进程相当于被弃养，会被init1号进程领养。</p>
+<p>这样可让内核把僵尸子进程转交给init1号进程去处理释放，省去了父进程wait这个子进程的麻烦。</p>
+<p>这个小技巧常常被用于提升并发服务器的性能！</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a target="_blank" rel="noopener" href="https://blog.csdn.net/wtl666_6/article/details/129513009">https://blog.csdn.net/wtl666_6/article/details/129513009</a>	“参考资料1”</p>
 
     </div>
 
@@ -283,8 +314,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/C/" rel="tag"># C++</a>
-              <a href="/tags/%E5%88%B7%E9%A2%98/" rel="tag"># 刷题</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
           </div>
 
         
@@ -293,12 +324,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2023/09/e5cb20f8607e.html" rel="prev" title="这是在测试">
-      <i class="fa fa-chevron-left"></i> 这是在测试
+    <a href="/2023/11/20b3b53ad2ba.html" rel="prev" title="梯度消失、梯度爆炸怎么解决">
+      <i class="fa fa-chevron-left"></i> 梯度消失、梯度爆炸怎么解决
     </a></div>
       <div class="post-nav-item">
-    <a href="/2023/11/91fba8963d27.html" rel="next" title="markdown语法">
-      markdown语法 <i class="fa fa-chevron-right"></i>
+    <a href="/2023/11/2fc88ef6a3e9.html" rel="next" title="C++容器之填充递增序列">
+      C++容器之填充递增序列 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -359,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">头文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E8%B0%83%E7%94%A8API"><span class="nav-number">2.</span> <span class="nav-text">基础调用API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E6%80%9D%E8%80%83%EF%BC%8C%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">进阶思考，自定义数据类型</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B%E7%9A%84%E4%BA%A7%E7%94%9F%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">僵尸进程的产生：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">解决方式：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -542,7 +573,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'gitalk',
       owner       : 'YXuan-Wang',
       admin       : ['YXuan-Wang'],
-      id          : '431c3bf0109d20615d9d3305c10a9db5',
+      id          : '8bfddcebad5bb3a821c3d6ea3c56a0b6',
         language: 'zh-CN',
       distractionFreeMode: true
     });
