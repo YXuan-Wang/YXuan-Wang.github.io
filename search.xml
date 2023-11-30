@@ -578,4 +578,45 @@
         <tag>项目</tag>
       </tags>
   </entry>
+  <entry>
+    <title>《MySQL是怎样运行的：从根儿上理解MySQL》笔记</title>
+    <url>/2023/11/7903b9c54b9d.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><blockquote>
+<p>作者联系方式：</p>
+<p>微信： xiaohaizi4919</p>
+<p>公众号：我们都是小青蛙</p>
+</blockquote>
+<ul>
+<li>该书只是介绍 MySQL 内核的一些核心概念的小白进阶书籍</li>
+<li>学习方法：<strong>不要跳着看！！！</strong></li>
+</ul>
+<h2 id="1-重新认识MySQL"><a href="#1-重新认识MySQL" class="headerlink" title="1. 重新认识MySQL"></a>1. 重新认识MySQL</h2><ul>
+<li><p>MySQL也是基于<strong>客户端／服务器架构</strong>的。</p>
+</li>
+<li><p>大概流程是：用户使用MySQL客户端来连接MySQL服务器，成功连接之后向服务器进程发送请求并得到回复的</p>
+<p>过程。</p>
+</li>
+<li><p>MySQL服务器处理客户端请求的流程如下图1所示</p>
+<ul>
+<li><img src="/./images/1.png"></li>
+</ul>
+</li>
+<li><p>为什么叫<code>引擎</code>呢？因为这个名字更拉风～以前叫做<code>表处理器</code>。为了管理方便，人们把 <strong>连接管理 、 查询缓存 、 语法解析 、 查询优化</strong> 这些并不涉及<strong>真实数据存储</strong>的功能划分为 MySQL server 的功能，把真实存取数据的功能划分为 <strong>存储引擎</strong> 的功能。（有没有很熟悉的操作？网络的分层结构也是如此，下层对上层提供服务，上层依赖下层）</p>
+</li>
+<li><p>MySQL支持非常多种存储引擎，最常用的就是 <strong>InnoDB 和 MyISAM</strong> ，有时会提一下 <strong>Memory</strong> 。<strong>默认的存储引擎为</strong> <strong>InnoDB</strong> 。</p>
+</li>
+<li><p>存储引擎是负责对表中的数据进行提取和写入工作的，<strong>我们可以为不同的表设置不同的存储引擎</strong>，也就是说不同的表可以有不同的物理存储结构，不同的提取和写入方式。</p>
+</li>
+</ul>
+<h2 id="2-其他"><a href="#2-其他" class="headerlink" title="2. 其他"></a>2. 其他</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
 </search>
