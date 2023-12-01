@@ -1,28 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>C++基础之指针</title>
-    <url>/2021/06/315ec67734e1.html</url>
-    <content><![CDATA[<p>[toc]</p>
-<span id="more"></span>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="c"><a href="#c" class="headerlink" title="c++"></a>c++</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+    <title>梯度消失、梯度爆炸怎么解决</title>
+    <url>/2023/11/20b3b53ad2ba.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
+<p>梯度消失与梯度爆炸其实是一种情况，看参考链接的文章就知道了。</p>
+</blockquote>
+<p>两种情况下梯度消失经常出现，一是在<strong>深层网络</strong>中，二是采用了<strong>不合适的损失函数</strong>，比如sigmoid。梯度爆炸一般出现在深层网络和权值初始化值太大的情况下。</p>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><ol>
+<li><p>预训练加微调。</p>
+<p>此思想相当于是先寻找局部最优，然后整合起来寻找全局最优，此方法有一定的好处，但是目前应用的不是很多了。此方法来自Hinton在2006年发表的一篇论文，Hinton为了解决梯度的问题，提出采取无监督逐层训练方法，其基本思想是每次训练一层隐节点，训练时将上一层隐节点的输出作为输入，而本层隐节点的输出作为下一层隐节点的输入，此过程就是逐层“预训练”（pre-training）；在预训练完成后，再对整个网络进行“微调”（fine-tunning）。</p>
+</li>
+<li><p>梯度剪切、权重正则（针对梯度爆炸）。</p>
+<p><strong>梯度剪切</strong>这个方案主要是针对梯度爆炸提出的，其思想是设置一个梯度剪切阈值，然后更新梯度的时候，如果梯度超过这个阈值，那么就将其强制限制在这个范围之内。这可以防止梯度爆炸。</p>
+<p><strong>权重正则化</strong>（weithts regularization）比较常见的是l1正则，和l2正则，在各个深度框架中都有相应的API可以使用正则化。</p>
+</li>
+<li><p>使用不同的激活函数。</p>
+<p>relu、leakrelu、elu等激活函数。</p>
+</li>
+<li><p>使用batchnorm。</p>
+<p>Batchnorm本质上是解决反向传播过程中的梯度问题。batchnorm全名是batch normalization，简称BN，即批规范化，通过规范化操作将输出信号x规范化到均值为0，方差为1保证网络的稳定性。</p>
+</li>
+<li><p>使用残差结构。</p>
+<p>事实上，就是残差网络的出现导致了image net比赛的终结，自从残差提出后，几乎所有的深度网络都离不开残差的身影，相比较之前的几层，几十层的深度网络，在残差网络面前都不值一提，残差可以很轻松的构建几百层，一千多层的网络而不用担心梯度消失过快的问题，原因就在于残差的捷径（shortcut）部分</p>
+</li>
+<li><p>使用LSTM网络。</p>
+<p>LSTM全称是<strong>长短期记忆网络</strong>（long-short term memory networks），是不那么容易发生梯度消失的，主要原因在于LSTM内部复杂的“门”(gates)。LSTM通过它内部的“门”可以接下来更新的时候“记住”前几次训练的”残留记忆“，因此，经常用于生成文本中。目前也有基于CNN的LSTM，之后可以尝试一下。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://zhuanlan.zhihu.com/p/622605118?utm_id=0">https://zhuanlan.zhihu.com/p/622605118?utm_id=0</a>	“参考链接1”</p>
 ]]></content>
       <categories>
-        <category>C++</category>
+        <category>机器学习</category>
       </categories>
       <tags>
-        <tag>C++</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
-    <title>这是在测试</title>
-    <url>/2023/09/e5cb20f8607e.html</url>
-    <content><![CDATA[<h1 id="test-my-blog"><a href="#test-my-blog" class="headerlink" title="test my blog"></a>test my blog</h1><p>test my blogtest my blog</p>
+    <title>过拟合和欠拟合怎么解决</title>
+    <url>/2023/11/c1a54a404412.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
+<p>过拟合和欠拟合是机器学习中常见的问题。</p>
+</blockquote>
+<ul>
+<li><strong>过拟合</strong>指的是模型过于复杂，在训练数据上表现良好，但是在新数据上表现却很差。</li>
+<li><strong>欠拟合</strong>指的是模型在训练集、验证集和测试集上均表现不佳的情况。</li>
+</ul>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
+<p>过拟合和欠拟合的解决办法较为相对，反面基本可以解决另一个问题。下面谈谈针对过拟合。</p>
+</blockquote>
+<ol>
+<li><p>增加数据量。</p>
+<p>当数据量较少时，模型容易过拟合。因此，增加数据量是解决过拟合问题的重要方法之一。如果数据集无法扩充，可以通过数据增强的方式来达到类似的效果。</p>
+</li>
+<li><p>简化模型结构。</p>
+<p>过于复杂的模型容易导致过拟合。因此，可以通过简化模型结构的方式来解决过拟合问题。例如，减少深度学习模型的层数、减少神经元数量等。此外，也可以通过增加正则化项来限制模型的复杂度。</p>
+</li>
+<li><p>采用正则化方法。</p>
+<p>正则化是一种常用的防止过拟合的方法。它通过在损失函数中加入正则化项，对模型参数进行惩罚，从而限制模型的复杂度。常见的正则化方法包括L1正则化、L2正则化等。</p>
+</li>
+<li><p>采用Dropout方法。</p>
+<p>Dropout是一种常用的防止过拟合的方法。它通过在训练过程中随机地将一些神经元的输出置为0，从而强制模型学习到多种特征表示。这样可以使得模型更加鲁棒，防止过拟合。</p>
+</li>
+<li><p>交又验证。</p>
+<p>交又验证是一种常用的评估模型性能的方法。它将数据集分为若干份每次将其中一份作为验证集，其余部分作为训练集。这样可以多次训练模型，并在验证集上进行测试，从而得到一个更加准确的模型性能评估结果。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html">https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html</a>	“参考链接1”<br>[2]:<a href="https://blog.csdn.net/m0_69082030/article/details/128175288">https://blog.csdn.net/m0_69082030/article/details/128175288</a>	“参考链接2”</p>
 ]]></content>
       <categories>
-        <category>零零碎碎</category>
+        <category>机器学习</category>
       </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
   </entry>
   <entry>
     <title>C++基础知识</title>
@@ -85,21 +139,128 @@
       </tags>
   </entry>
   <entry>
-    <title>C++语法之priority_queue自定义大小根堆</title>
-    <url>/2023/10/af4bec111749.html</url>
+    <title>C++基础之格式化输出</title>
+    <url>/2023/11/dcbca6ff400e.html</url>
     <content><![CDATA[<p>[TOC]</p>
-<h2 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;priority_queue&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="使用printf-函数进行格式化输出："><a href="#使用printf-函数进行格式化输出：" class="headerlink" title="使用printf()函数进行格式化输出："></a>使用printf()函数进行格式化输出：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> price = <span class="number">19.99</span>;</span><br><span class="line"><span class="type">int</span> quantity = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Total price: $%.2f\n&quot;</span>, price * quantity);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Quantity: %04d\n&quot;</span>, quantity);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">%.2f用于格式化输出小数点后两位；%04d用于设置输出占据宽度为4，并在前面填充零。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="基础调用API"><a href="#基础调用API" class="headerlink" title="基础调用API"></a>基础调用API</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    priority_queue&lt;<span class="type">int</span>&gt; q1;<span class="comment">//默认大根堆</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, less&lt;<span class="type">int</span>&gt; &gt; q2;<span class="comment">//完全体的大根堆，和上述一致</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt; &gt; q3;<span class="comment">//小根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用&lt;&lt;运算符和格式控制符进行输出："></a>使用&lt;&lt;运算符和格式控制符进行输出：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> pi = <span class="number">3.14159</span>;</span><br><span class="line"><span class="type">int</span> num = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;Pi: &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">2</span>) &lt;&lt; pi &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;Number: &quot;</span> &lt;&lt; std::<span class="built_in">setw</span>(<span class="number">5</span>) &lt;&lt; std::<span class="built_in">setfill</span>(<span class="string">&#x27;0&#x27;</span>) &lt;&lt; num &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">std::fixed和std::setprecision(2)用于固定小数位并设置精度为两位小数。</span></span><br><span class="line"><span class="comment">std::setw(5)和std::setfill(&#x27;0&#x27;)用于设置输出宽度为5，并在前面填充零。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
-
-<h2 id="进阶思考，自定义数据类型"><a href="#进阶思考，自定义数据类型" class="headerlink" title="进阶思考，自定义数据类型"></a>进阶思考，自定义数据类型</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    <span class="built_in">ListNode</span>() : <span class="built_in">val</span>(<span class="number">0</span>), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x, ListNode *next) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(next) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp1</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &gt; b-&gt;val; <span class="comment">//是&gt; 而不是&lt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp2</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &lt; b-&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp1&gt; q4;<span class="comment">//自定义小根堆</span></span><br><span class="line">    priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp2&gt; q5;<span class="comment">//自定义大根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用字符串流（stringstream）进行格式化输出："><a href="#使用字符串流（stringstream）进行格式化输出：" class="headerlink" title="使用字符串流（stringstream）进行格式化输出："></a>使用字符串流（stringstream）进行格式化输出：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> weight = <span class="number">65.5</span>;</span><br><span class="line"><span class="type">int</span> age = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">std::stringstream ss;</span><br><span class="line">ss &lt;&lt; <span class="string">&quot;Weight: &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">1</span>) &lt;&lt; weight &lt;&lt; <span class="string">&quot;kg\n&quot;</span>;</span><br><span class="line">ss &lt;&lt; <span class="string">&quot;Age: &quot;</span> &lt;&lt; age &lt;&lt; <span class="string">&quot; years old\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; ss.<span class="built_in">str</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">将要输出的内容逐个写入字符串流中，然后通过ss.str()将字符串流的内容转换为字符串进行输出。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>C++</category>
       </categories>
       <tags>
         <tag>C++</tag>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++基础之指针</title>
+    <url>/2021/06/315ec67734e1.html</url>
+    <content><![CDATA[<p>[toc]</p>
+<span id="more"></span>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="c"><a href="#c" class="headerlink" title="c++"></a>c++</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++容器之填充递增序列</title>
+    <url>/2023/11/2fc88ef6a3e9.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="iota函数介绍："><a href="#iota函数介绍：" class="headerlink" title="iota函数介绍："></a>iota函数介绍：</h2><blockquote>
+<p>C++标准库提供了丰富的算法，其中之一就是iota算法。iota算法用于填充一个区间，以递增的方式给每个元素赋予一个值。</p>
+<p>iota算法是C++标准库中的一个函数模板，用于填充一个区间。它通过指定一个起始值，并根据区间的长度递增生成后续的值。它有助于快速生成递增的序列。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;numeric&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="函数原型："><a href="#函数原型：" class="headerlink" title="函数原型："></a>函数原型：</h2><blockquote>
+<p>first 和 last 是迭代器，表示要填充的区间的起始位置和结束位置。<br>value 是起始值，该值将根据区间的长度逐步增加。<br>无返回值。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">ForwardIt</span>, <span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">iota</span><span class="params">(ForwardIt first, ForwardIt last, T value)</span></span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="示例代码："><a href="#示例代码：" class="headerlink" title="示例代码："></a>示例代码：</h2><blockquote>
+<p>示例1：vector</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">nums</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">iota</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; num : nums) &#123;</span><br><span class="line">        std::cout &lt;&lt; num &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">1 2 3 4 5</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">在这个示例中，我们创建了一个长度为5的整数向量nums，并使用iota算法填充了向量的元素。起始值为1，根据向量的长度递增生成后续的值。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>示例2：list</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;list&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::list&lt;<span class="type">char</span>&gt; <span class="title">chars</span><span class="params">(<span class="number">4</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">iota</span>(chars.<span class="built_in">begin</span>(), chars.<span class="built_in">end</span>(), <span class="string">&#x27;A&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; ch : chars) &#123;</span><br><span class="line">        std::cout &lt;&lt; ch &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">A B C D</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">在这个示例中，我们创建了一个长度为4的字符型列表chars，并使用iota算法填充了列表的元素。起始值为’A’，根据列表的长度递增生成后续的值。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>示例3：array</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;array&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::array&lt;<span class="type">float</span>, 6&gt; values;</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">iota</span>(values.<span class="built_in">begin</span>(), values.<span class="built_in">end</span>(), <span class="number">1.5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; val : values) &#123;</span><br><span class="line">        std::cout &lt;&lt; val &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">1.5 2.5 3.5 4.5 5.5 6.5</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">在这个示例中，我们创建了一个大小为6的浮点型数组values，并使用iota算法填充了数组的元素。起始值为1.5，根据数组的大小递增生成后续的值。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://developer.aliyun.com/article/1350264">https://developer.aliyun.com/article/1350264</a>	“参考资料1”</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记录一道有意思的算法题</title>
+    <url>/2023/11/ffae31d2f853.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。-字节"><a href="#给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。-字节" class="headerlink" title="给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。#字节#"></a>给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。#字节#</h2><blockquote>
+<ol>
+<li><p>要求使用O(1)空间内解决该问题</p>
+</li>
+<li><p>解决交换的次数越多随机数随到已经交换的下标的可能性越大的问题</p>
+<p>该算法已有标准实现，可以自己看看</p>
+</li>
+</ol>
+</blockquote>
+<p>单纯从题目不加限制条件的角度来做，可以想到暴力法。标准实现还得看洗牌算法。</p>
+<ol>
+<li><strong>暴力法</strong>:申请另一个数组</li>
+<li><strong>Fisher-Yates 洗牌算法</strong>：</li>
+</ol>
+<blockquote>
+<p>我们可以在移除 <code>waiting</code> 的第 <code>k</code>个元素时，将第 <code>k</code>个元素与数组的最后 <code>1</code>个元素交换，然后移除交换后数组的最后 <code>1</code>个元素，这样我们只需要 <code>O(1)</code> 的时间复杂度即可完成移除第 <code>k</code> 个元素的操作。此时，被移除的交换后数组的最后 <code>1</code> 个元素即为我们根据随机下标获取的元素。</p>
+<p>在此基础上，我们也可以不移除最后 <code>1</code> 个元素，而直接将其作为乱序后的结果，并更新待乱序数组的长度，从而实现数组的原地乱序。因为我们不再需要从数组中移除元素，所以也可以将第 <code>k</code> 个元素与第 <code>1</code> 个元素交换。</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">代码同下</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>Knuth 洗牌算法</strong>：</li>
+</ol>
+<blockquote>
+<p>在 <code>O(n)</code> 复杂度内等概率返回某个方案。</p>
+<p>具体的，我们从前往后尝试填充 <code>[0,n−1]</code> 该填入什么数时，通过随机当前下标与（剩余的）哪个下标进行值交换来实现。</p>
+<p>对于下标 <code>x</code> 而言，我们从 <code>[x,n−1]</code> 中随机出一个位置与 <code>x</code> 进行值交换，当所有位置都进行这样的处理后，我们便得到了一个公平的洗牌方案。</p>
+<p>这样能确保每个元素在每个位置的概率都是<code>1/n</code>。 </p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Solution</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;nums = nums;</span><br><span class="line">        <span class="keyword">this</span>-&gt;original.<span class="built_in">resize</span>(nums.<span class="built_in">size</span>());</span><br><span class="line">        <span class="built_in">copy</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), original.<span class="built_in">begin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">reset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">copy</span>(original.<span class="built_in">begin</span>(), original.<span class="built_in">end</span>(), nums.<span class="built_in">begin</span>());</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">shuffle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="type">int</span> j = i + <span class="built_in">rand</span>() % (nums.<span class="built_in">size</span>() - i);</span><br><span class="line">            <span class="built_in">swap</span>(nums[i], nums[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; nums;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; original;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>解答参考链接：</p>
+<p>[1]:<a href="https://blog.csdn.net/cy973071263/article/details/128818181">https://blog.csdn.net/cy973071263/article/details/128818181</a>	“参考链接1”<br>[2]:<a href="https://blog.csdn.net/defaultbyzt/article/details/128628119">https://blog.csdn.net/defaultbyzt/article/details/128628119</a>	“参考链接2”<br>[3]:<a href="https://www.bilibili.com/read/cv26024350/">https://www.bilibili.com/read/cv26024350/</a>	“参考链接3”<br>[4]:<a href="https://leetcode.cn/problems/shuffle-an-array/">https://leetcode.cn/problems/shuffle-an-array/</a>	“参考链接4”</p>
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
         <tag>刷题</tag>
       </tags>
   </entry>
@@ -131,14 +292,56 @@
       </tags>
   </entry>
   <entry>
-    <title>C++基础之格式化输出</title>
-    <url>/2023/11/dcbca6ff400e.html</url>
+    <title>《MySQL是怎样运行的：从根儿上理解MySQL》笔记</title>
+    <url>/2023/11/7903b9c54b9d.html</url>
     <content><![CDATA[<p>[TOC]</p>
-<h2 id="使用printf-函数进行格式化输出："><a href="#使用printf-函数进行格式化输出：" class="headerlink" title="使用printf()函数进行格式化输出："></a>使用printf()函数进行格式化输出：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> price = <span class="number">19.99</span>;</span><br><span class="line"><span class="type">int</span> quantity = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Total price: $%.2f\n&quot;</span>, price * quantity);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;Quantity: %04d\n&quot;</span>, quantity);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">%.2f用于格式化输出小数点后两位；%04d用于设置输出占据宽度为4，并在前面填充零。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><blockquote>
+<p>作者联系方式：</p>
+<p>微信： xiaohaizi4919</p>
+<p>公众号：我们都是小青蛙</p>
+</blockquote>
+<ul>
+<li>该书只是介绍 MySQL 内核的一些核心概念的小白进阶书籍</li>
+<li>学习方法：<strong>不要跳着看！！！</strong></li>
+</ul>
+<h2 id="1-重新认识MySQL"><a href="#1-重新认识MySQL" class="headerlink" title="1. 重新认识MySQL"></a>1. 重新认识MySQL</h2><ul>
+<li><p>MySQL也是基于<strong>客户端／服务器架构</strong>的。</p>
+</li>
+<li><p>大概流程是：用户使用MySQL客户端来连接MySQL服务器，成功连接之后向服务器进程发送请求并得到回复的</p>
+<p>过程。</p>
+</li>
+<li><p>MySQL服务器处理客户端请求的流程如下图1所示</p>
+<ul>
+<li><img src="/images/1.png"></li>
+</ul>
+</li>
+<li><p>为什么叫<code>引擎</code>呢？因为这个名字更拉风～以前叫做<code>表处理器</code>。为了管理方便，人们把 <strong>连接管理 、 查询缓存 、 语法解析 、 查询优化</strong> 这些并不涉及<strong>真实数据存储</strong>的功能划分为 MySQL server 的功能，把真实存取数据的功能划分为 <strong>存储引擎</strong> 的功能。（有没有很熟悉的操作？网络的分层结构也是如此，下层对上层提供服务，上层依赖下层）</p>
+</li>
+<li><p>MySQL支持非常多种存储引擎，最常用的就是 <strong>InnoDB 和 MyISAM</strong> ，有时会提一下 <strong>Memory</strong> 。<strong>默认的存储引擎为</strong> <strong>InnoDB</strong> 。</p>
+</li>
+<li><p>存储引擎是负责对表中的数据进行提取和写入工作的，<strong>我们可以为不同的表设置不同的存储引擎</strong>，也就是说不同的表可以有不同的物理存储结构，不同的提取和写入方式。</p>
+</li>
+</ul>
+<h2 id="2-其他"><a href="#2-其他" class="headerlink" title="2. 其他"></a>2. 其他</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++语法之priority_queue自定义大小根堆</title>
+    <url>/2023/10/af4bec111749.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="头文件"><a href="#头文件" class="headerlink" title="头文件"></a>头文件</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;priority_queue&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用&lt;&lt;运算符和格式控制符进行输出："></a>使用&lt;&lt;运算符和格式控制符进行输出：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iomanip&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> pi = <span class="number">3.14159</span>;</span><br><span class="line"><span class="type">int</span> num = <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;Pi: &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">2</span>) &lt;&lt; pi &lt;&lt; std::endl;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;Number: &quot;</span> &lt;&lt; std::<span class="built_in">setw</span>(<span class="number">5</span>) &lt;&lt; std::<span class="built_in">setfill</span>(<span class="string">&#x27;0&#x27;</span>) &lt;&lt; num &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">std::fixed和std::setprecision(2)用于固定小数位并设置精度为两位小数。</span></span><br><span class="line"><span class="comment">std::setw(5)和std::setfill(&#x27;0&#x27;)用于设置输出宽度为5，并在前面填充零。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="基础调用API"><a href="#基础调用API" class="headerlink" title="基础调用API"></a>基础调用API</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    priority_queue&lt;<span class="type">int</span>&gt; q1;<span class="comment">//默认大根堆</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, less&lt;<span class="type">int</span>&gt; &gt; q2;<span class="comment">//完全体的大根堆，和上述一致</span></span><br><span class="line">    priority_queue&lt;<span class="type">int</span>, vector&lt;<span class="type">int</span>&gt;, greater&lt;<span class="type">int</span>&gt; &gt; q3;<span class="comment">//小根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="使用字符串流（stringstream）进行格式化输出："><a href="#使用字符串流（stringstream）进行格式化输出：" class="headerlink" title="使用字符串流（stringstream）进行格式化输出："></a>使用字符串流（stringstream）进行格式化输出：</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">double</span> weight = <span class="number">65.5</span>;</span><br><span class="line"><span class="type">int</span> age = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">std::stringstream ss;</span><br><span class="line">ss &lt;&lt; <span class="string">&quot;Weight: &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::<span class="built_in">setprecision</span>(<span class="number">1</span>) &lt;&lt; weight &lt;&lt; <span class="string">&quot;kg\n&quot;</span>;</span><br><span class="line">ss &lt;&lt; <span class="string">&quot;Age: &quot;</span> &lt;&lt; age &lt;&lt; <span class="string">&quot; years old\n&quot;</span>;</span><br><span class="line"></span><br><span class="line">std::cout &lt;&lt; ss.<span class="built_in">str</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">将要输出的内容逐个写入字符串流中，然后通过ss.str()将字符串流的内容转换为字符串进行输出。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="进阶思考，自定义数据类型"><a href="#进阶思考，自定义数据类型" class="headerlink" title="进阶思考，自定义数据类型"></a>进阶思考，自定义数据类型</h2><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="type">int</span> val;</span><br><span class="line">    ListNode *next;</span><br><span class="line">    <span class="built_in">ListNode</span>() : <span class="built_in">val</span>(<span class="number">0</span>), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(<span class="literal">nullptr</span>) &#123;&#125;</span><br><span class="line">    <span class="built_in">ListNode</span>(<span class="type">int</span> x, ListNode *next) : <span class="built_in">val</span>(x), <span class="built_in">next</span>(next) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp1</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &gt; b-&gt;val; <span class="comment">//是&gt; 而不是&lt;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">cmp2</span>&#123;</span><br><span class="line">    <span class="function"><span class="type">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(ListNode *a, ListNode *b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a-&gt;val &lt; b-&gt;val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp1&gt; q4;<span class="comment">//自定义小根堆</span></span><br><span class="line">    priority_queue&lt;ListNode *, vector&lt;ListNode *&gt;, cmp2&gt; q5;<span class="comment">//自定义大根堆</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>C++</category>
@@ -146,6 +349,188 @@
       <tags>
         <tag>C++</tag>
         <tag>刷题</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>markdown语法</title>
+    <url>/2023/11/91fba8963d27.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="使用的工具："><a href="#使用的工具：" class="headerlink" title="使用的工具："></a>使用的工具：</h2><p><a href="https://typoraio.cn/">typora官网</a></p>
+<p><a href="https://support.typoraio.cn/zh/Markdown-Reference/">typora官方学习markdown手册</a></p>
+<p><a href="https://www.cnblogs.com/KoiC/p/17073950.html">仅供学习参考使用的免费typora</a></p>
+<h2 id="常用typora快捷键："><a href="#常用typora快捷键：" class="headerlink" title="常用typora快捷键："></a>常用typora快捷键：</h2><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CTRL+K</td>
+<td>插入超链接</td>
+</tr>
+<tr>
+<td>CTRL+T</td>
+<td>插入表格</td>
+</tr>
+<tr>
+<td>CTRL+Enter</td>
+<td>表格里下方插入一行</td>
+</tr>
+<tr>
+<td>CTRL+B</td>
+<td>字体加粗</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>CTRL+Shift+[</td>
+<td>有序列表</td>
+</tr>
+<tr>
+<td>CTRL+Shift+]</td>
+<td>无序列表</td>
+</tr>
+<tr>
+<td>CTRL+Shift+K</td>
+<td>代码块</td>
+</tr>
+<tr>
+<td>CTRL+Shift+M</td>
+<td>公式块（理解为：math）</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="后续进行补充"><a href="#后续进行补充" class="headerlink" title="后续进行补充"></a>后续进行补充</h2><p>暂时完结</p>
+]]></content>
+      <categories>
+        <category>工具相关</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这是在测试</title>
+    <url>/2023/09/e5cb20f8607e.html</url>
+    <content><![CDATA[<h1 id="test-my-blog"><a href="#test-my-blog" class="headerlink" title="test my blog"></a>test my blog</h1><p>test my blogtest my blog</p>
+]]></content>
+      <categories>
+        <category>零零碎碎</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux僵尸进程相关问题</title>
+    <url>/2023/11/f73dfc9b8e43.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="僵尸进程的产生："><a href="#僵尸进程的产生：" class="headerlink" title="僵尸进程的产生："></a>僵尸进程的产生：</h2><p>Linux下进程有种状态叫做僵尸状态</p>
+<p>原因是父进程<code>fork()</code>出来的子进程结束之后，内核会给父进程发送一个<code>SIGCHLD信号</code></p>
+<blockquote>
+<p>这个SIGCHLD信号的作用是，及时通知父进程子进程的退出，让父进程通过一系列手段将他回收</p>
+<p>回收的意义:</p>
+<ol>
+<li>避免僵尸进程的产生，内存泄漏</li>
+<li>且使得父进程能拿到子进程的退出状态，进行相应处理</li>
+</ol>
+</blockquote>
+<p>如果父进程没有忽略这个信号(设置SIG_IGN)，也没有等待(wait)子进程，而且结束的也比子进程晚(不能托管被init1号进程领养)，并且也没有handler捕捉这个信号，那子进程就会进入僵尸状态; 维护者自己的task_struct开销，这也是一种内存泄露;</p>
+<h2 id="解决方式："><a href="#解决方式：" class="headerlink" title="解决方式："></a>解决方式：</h2><ol>
+<li><p>父进程阻塞调用wait()。</p>
+<p>调用细节：进程一旦调用了wait，就立即<strong>阻塞自己</strong>，由wait自动分析是否当前进程的<strong>某个</strong>子进程已经退出，如果让它找到了这样一个已经变成僵尸的子进程，wait就会收集这个子进程的信息，并把它彻底销毁后返回；如果没有找到这样一个子进程，wait就会<strong>一直阻塞</strong>在这里，直到有一个出现为止。</p>
+<p>缺点：显然wait的调用是非常不合理的，阻塞时等待会让父进程干不了别的事情。</p>
+</li>
+<li><p>父进程非阻塞调用waitpid()。</p>
+<p>根据源码的观察，不难发现，其实wait就是waitpid的一种封装。</p>
+<p>缺点：waitpid虽然不会阻塞时等待，但是也需要占用cpu资源，定期的轮训waitpid看看有没有子进程处于僵尸状态，以便将他回收，也是有一定开销的。</p>
+</li>
+<li><p>SIGCHLD信号。</p>
+<blockquote>
+<p>其实我们的子进程每次终止时<strong>内核</strong>都会给父进程发送一个<strong>SIGCHLD信号</strong>，如果<strong>父进程没有处理这个信号，也没有等待(wait)子进程</strong>，那他就会进入僵尸状态</p>
+</blockquote>
+<p>既然这样，我们可以用<strong>signal()函数+waitpid()接口</strong>处理一下这个信号，答到一个子进程退出之后，主动通知父进程将其回收的<strong>异步通知作用</strong>！(显然效率是比父进程主动wait和waitpid这种同步处理高！)</p>
+<p>注意，handler中使用while循环处理回收任务的原因是:SIGCHILD是个非可靠信号！</p>
+<p>一个父进程可能有很多子进程，如果多个子进程同时退出，SIGCHILD会出现信号丢失(只存在1个)。如果用if处理，也就只处理一个子进程。剩下的子进程也就变成了僵尸进程!</p>
+<p>因此我们发现有子进程退出，就用while循环来处理，如果恰好多个子进程退出，即便信号丢失，我们也能while通过waitpid的返回值不断释放他们，即便只有一个子进程退出，第二次循环waitpid会返回0，我们也会跳出循环！</p>
+</li>
+<li><p>SIG_IGN信号。</p>
+<p>解决僵尸进程还有一个方式，就是让他变为“孤儿进程”，也就是init1号进程领养托管，进而释放这个子进程的资源！</p>
+<p>除了让父进程退出的比子进程早之外，我们可以通过如下操作，将SIGCHLD信号的处理方式设置为SIG_IGN–&gt;<strong>忽略</strong>，这样代表父进程忽视了这个信号，子进程相当于被弃养，会被init1号进程领养。</p>
+<p>这样可让内核把僵尸子进程转交给init1号进程去处理释放，省去了父进程wait这个子进程的麻烦。</p>
+<p>这个小技巧常常被用于提升并发服务器的性能！</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://blog.csdn.net/wtl666_6/article/details/129513009">https://blog.csdn.net/wtl666_6/article/details/129513009</a>	“参考资料1”</p>
+]]></content>
+      <categories>
+        <category>面试相关</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>项目</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SQL语句相关问题</title>
+    <url>/2023/11/f290346388e4.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h1 id="查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字"><a href="#查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字" class="headerlink" title="查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字"></a>查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 给定成绩表t，表结构字段为(name, subject, score)</span><br><span class="line"></span><br><span class="line"># 使用子<span class="keyword">sql</span>语句</span><br><span class="line"><span class="keyword">select</span> t.<span class="operator">*</span> </span><br><span class="line"><span class="keyword">from</span> (<span class="keyword">select</span> name, <span class="built_in">max</span>(score) m <span class="keyword">from</span> t <span class="keyword">GROUP</span> <span class="keyword">BY</span> name) b, t</span><br><span class="line"><span class="keyword">where</span> t.name<span class="operator">=</span>b.name <span class="keyword">and</span> t.score<span class="operator">=</span>b.m</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>[1]:<a href="https://blog.csdn.net/zb199738/article/details/102767660">https://blog.csdn.net/zb199738/article/details/102767660</a>	“参考链接”</p>
+]]></content>
+      <categories>
+        <category>面试相关</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何解决TCP粘包问题</title>
+    <url>/2023/11/8c2faec0a14b.html</url>
+    <content><![CDATA[<p>[TOC]</p>
+<h2 id="TCP粘包问题"><a href="#TCP粘包问题" class="headerlink" title="TCP粘包问题"></a>TCP粘包问题</h2><ul>
+<li>TCP数据粘包是指发送方连续发送多个数据包时，接收方在接收时会将多个数据包粘成一个大的数据包，造成数据处理上的困难。</li>
+<li>首先回忆一下，TCP的三大特点：面向连接、可靠的、基于字节流的。</li>
+<li>显然，问题出在<code>TCP是基于字节流的</code>，所以并不会明确TCP包的边界。而UDP是基于包的，所以不会出现这个问题。</li>
+</ul>
+<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
+<p>总的原则：既然没有边界，那么加上边界识别的机制那就完活了。</p>
+</blockquote>
+<ol>
+<li><p>设置消息边界：在消息的末尾添加特殊字符或者标志符号，在接收方收到消息时根据特殊字符或标志符号来分隔消息。</p>
+</li>
+<li><p>消息长度：在消息的开头添加消息长度信息，在接收方接收到消息时先读取消息长度，再读取对应长度的消息内容。</p>
+</li>
+<li><p>延迟发送：发送方在发送数据时，可以采用延迟发送的方式，即等待一段时间再发送，以此避免多个数据包同时发送造成粘包。</p>
+</li>
+<li><p>使用固定长度的数据包：发送方发送固定长度的数据包，接收方按照固定长度来接收数据包，以此避免粘包问题。 </p>
+<p>举例：在Qt中，可以通过设置socket的读取缓存区大小、设置消息边界符号、消息长度信息等方式来防止TCP数据粘包。例如，可以使用以下代码设置消息边界符号：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QTcpSocket *socket = <span class="keyword">new</span> <span class="built_in">QTcpSocket</span>(<span class="keyword">this</span>);</span><br><span class="line">socket-&gt;<span class="built_in">setReadBufferSize</span>(<span class="number">1024</span>); <span class="comment">//设置读取缓存区大小为1024字节</span></span><br><span class="line">socket-&gt;<span class="built_in">write</span>(<span class="string">&quot;message1\n&quot;</span>); <span class="comment">//发送消息1</span></span><br><span class="line">socket-&gt;<span class="built_in">write</span>(<span class="string">&quot;message2\n&quot;</span>); <span class="comment">//发送消息2</span></span><br></pre></td></tr></table></figure>
+
+<p>在接收方，可以使用以下代码来接收数据并根据消息边界符号分隔消息：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (socket-&gt;<span class="built_in">bytesAvailable</span>() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    QByteArray data = socket-&gt;<span class="built_in">readLine</span>(); <span class="comment">//读取一行数据</span></span><br><span class="line">    QString message = <span class="built_in">QString</span>(data).<span class="built_in">trimmed</span>(); <span class="comment">//去除换行符</span></span><br><span class="line">    <span class="comment">//处理接收到的消息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://blog.csdn.net/future_ai/article/details/130192182">https://blog.csdn.net/future_ai/article/details/130192182</a>	“参考链接1”</p>
+]]></content>
+      <categories>
+        <category>面试相关</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
@@ -232,391 +617,6 @@
       <tags>
         <tag>C++</tag>
         <tag>刷题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>markdown语法</title>
-    <url>/2023/11/91fba8963d27.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="使用的工具："><a href="#使用的工具：" class="headerlink" title="使用的工具："></a>使用的工具：</h2><p><a href="https://typoraio.cn/">typora官网</a></p>
-<p><a href="https://support.typoraio.cn/zh/Markdown-Reference/">typora官方学习markdown手册</a></p>
-<p><a href="https://www.cnblogs.com/KoiC/p/17073950.html">仅供学习参考使用的免费typora</a></p>
-<h2 id="常用typora快捷键："><a href="#常用typora快捷键：" class="headerlink" title="常用typora快捷键："></a>常用typora快捷键：</h2><table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>CTRL+K</td>
-<td>插入超链接</td>
-</tr>
-<tr>
-<td>CTRL+T</td>
-<td>插入表格</td>
-</tr>
-<tr>
-<td>CTRL+Enter</td>
-<td>表格里下方插入一行</td>
-</tr>
-<tr>
-<td>CTRL+B</td>
-<td>字体加粗</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>CTRL+Shift+[</td>
-<td>有序列表</td>
-</tr>
-<tr>
-<td>CTRL+Shift+]</td>
-<td>无序列表</td>
-</tr>
-<tr>
-<td>CTRL+Shift+K</td>
-<td>代码块</td>
-</tr>
-<tr>
-<td>CTRL+Shift+M</td>
-<td>公式块（理解为：math）</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="后续进行补充"><a href="#后续进行补充" class="headerlink" title="后续进行补充"></a>后续进行补充</h2><p>暂时完结</p>
-]]></content>
-      <categories>
-        <category>工具相关</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记录一道有意思的算法题</title>
-    <url>/2023/11/ffae31d2f853.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。-字节"><a href="#给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。-字节" class="headerlink" title="给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。#字节#"></a>给你一个从0开始的递增数组，将其随机打乱成另一个数组并返回。#字节#</h2><blockquote>
-<ol>
-<li><p>要求使用O(1)空间内解决该问题</p>
-</li>
-<li><p>解决交换的次数越多随机数随到已经交换的下标的可能性越大的问题</p>
-<p>该算法已有标准实现，可以自己看看</p>
-</li>
-</ol>
-</blockquote>
-<p>单纯从题目不加限制条件的角度来做，可以想到暴力法。标准实现还得看洗牌算法。</p>
-<ol>
-<li><strong>暴力法</strong>:申请另一个数组</li>
-<li><strong>Fisher-Yates 洗牌算法</strong>：</li>
-</ol>
-<blockquote>
-<p>我们可以在移除 <code>waiting</code> 的第 <code>k</code>个元素时，将第 <code>k</code>个元素与数组的最后 <code>1</code>个元素交换，然后移除交换后数组的最后 <code>1</code>个元素，这样我们只需要 <code>O(1)</code> 的时间复杂度即可完成移除第 <code>k</code> 个元素的操作。此时，被移除的交换后数组的最后 <code>1</code> 个元素即为我们根据随机下标获取的元素。</p>
-<p>在此基础上，我们也可以不移除最后 <code>1</code> 个元素，而直接将其作为乱序后的结果，并更新待乱序数组的长度，从而实现数组的原地乱序。因为我们不再需要从数组中移除元素，所以也可以将第 <code>k</code> 个元素与第 <code>1</code> 个元素交换。</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">代码同下</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><strong>Knuth 洗牌算法</strong>：</li>
-</ol>
-<blockquote>
-<p>在 <code>O(n)</code> 复杂度内等概率返回某个方案。</p>
-<p>具体的，我们从前往后尝试填充 <code>[0,n−1]</code> 该填入什么数时，通过随机当前下标与（剩余的）哪个下标进行值交换来实现。</p>
-<p>对于下标 <code>x</code> 而言，我们从 <code>[x,n−1]</code> 中随机出一个位置与 <code>x</code> 进行值交换，当所有位置都进行这样的处理后，我们便得到了一个公平的洗牌方案。</p>
-<p>这样能确保每个元素在每个位置的概率都是<code>1/n</code>。 </p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Solution</span>(vector&lt;<span class="type">int</span>&gt;&amp; nums) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;nums = nums;</span><br><span class="line">        <span class="keyword">this</span>-&gt;original.<span class="built_in">resize</span>(nums.<span class="built_in">size</span>());</span><br><span class="line">        <span class="built_in">copy</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), original.<span class="built_in">begin</span>());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">reset</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">copy</span>(original.<span class="built_in">begin</span>(), original.<span class="built_in">end</span>(), nums.<span class="built_in">begin</span>());</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function">vector&lt;<span class="type">int</span>&gt; <span class="title">shuffle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; nums.<span class="built_in">size</span>(); ++i) &#123;</span><br><span class="line">            <span class="type">int</span> j = i + <span class="built_in">rand</span>() % (nums.<span class="built_in">size</span>() - i);</span><br><span class="line">            <span class="built_in">swap</span>(nums[i], nums[j]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; nums;</span><br><span class="line">    vector&lt;<span class="type">int</span>&gt; original;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>解答参考链接：</p>
-<p>[1]:<a href="https://blog.csdn.net/cy973071263/article/details/128818181">https://blog.csdn.net/cy973071263/article/details/128818181</a>	“参考链接1”<br>[2]:<a href="https://blog.csdn.net/defaultbyzt/article/details/128628119">https://blog.csdn.net/defaultbyzt/article/details/128628119</a>	“参考链接2”<br>[3]:<a href="https://www.bilibili.com/read/cv26024350/">https://www.bilibili.com/read/cv26024350/</a>	“参考链接3”<br>[4]:<a href="https://leetcode.cn/problems/shuffle-an-array/">https://leetcode.cn/problems/shuffle-an-array/</a>	“参考链接4”</p>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>刷题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何解决TCP粘包问题</title>
-    <url>/2023/11/8c2faec0a14b.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="TCP粘包问题"><a href="#TCP粘包问题" class="headerlink" title="TCP粘包问题"></a>TCP粘包问题</h2><ul>
-<li>TCP数据粘包是指发送方连续发送多个数据包时，接收方在接收时会将多个数据包粘成一个大的数据包，造成数据处理上的困难。</li>
-<li>首先回忆一下，TCP的三大特点：面向连接、可靠的、基于字节流的。</li>
-<li>显然，问题出在<code>TCP是基于字节流的</code>，所以并不会明确TCP包的边界。而UDP是基于包的，所以不会出现这个问题。</li>
-</ul>
-<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
-<p>总的原则：既然没有边界，那么加上边界识别的机制那就完活了。</p>
-</blockquote>
-<ol>
-<li><p>设置消息边界：在消息的末尾添加特殊字符或者标志符号，在接收方收到消息时根据特殊字符或标志符号来分隔消息。</p>
-</li>
-<li><p>消息长度：在消息的开头添加消息长度信息，在接收方接收到消息时先读取消息长度，再读取对应长度的消息内容。</p>
-</li>
-<li><p>延迟发送：发送方在发送数据时，可以采用延迟发送的方式，即等待一段时间再发送，以此避免多个数据包同时发送造成粘包。</p>
-</li>
-<li><p>使用固定长度的数据包：发送方发送固定长度的数据包，接收方按照固定长度来接收数据包，以此避免粘包问题。 </p>
-<p>举例：在Qt中，可以通过设置socket的读取缓存区大小、设置消息边界符号、消息长度信息等方式来防止TCP数据粘包。例如，可以使用以下代码设置消息边界符号：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QTcpSocket *socket = <span class="keyword">new</span> <span class="built_in">QTcpSocket</span>(<span class="keyword">this</span>);</span><br><span class="line">socket-&gt;<span class="built_in">setReadBufferSize</span>(<span class="number">1024</span>); <span class="comment">//设置读取缓存区大小为1024字节</span></span><br><span class="line">socket-&gt;<span class="built_in">write</span>(<span class="string">&quot;message1\n&quot;</span>); <span class="comment">//发送消息1</span></span><br><span class="line">socket-&gt;<span class="built_in">write</span>(<span class="string">&quot;message2\n&quot;</span>); <span class="comment">//发送消息2</span></span><br></pre></td></tr></table></figure>
-
-<p>在接收方，可以使用以下代码来接收数据并根据消息边界符号分隔消息：</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> (socket-&gt;<span class="built_in">bytesAvailable</span>() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    QByteArray data = socket-&gt;<span class="built_in">readLine</span>(); <span class="comment">//读取一行数据</span></span><br><span class="line">    QString message = <span class="built_in">QString</span>(data).<span class="built_in">trimmed</span>(); <span class="comment">//去除换行符</span></span><br><span class="line">    <span class="comment">//处理接收到的消息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://blog.csdn.net/future_ai/article/details/130192182">https://blog.csdn.net/future_ai/article/details/130192182</a>	“参考链接1”</p>
-]]></content>
-      <categories>
-        <category>面试相关</category>
-      </categories>
-      <tags>
-        <tag>面试</tag>
-        <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQL语句相关问题</title>
-    <url>/2023/11/f290346388e4.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h1 id="查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字"><a href="#查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字" class="headerlink" title="查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字"></a>查询成绩表中每名学生成绩最高的课程和最大分数以及这个学生的名字</h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 给定成绩表t，表结构字段为(name, subject, score)</span><br><span class="line"></span><br><span class="line"># 使用子<span class="keyword">sql</span>语句</span><br><span class="line"><span class="keyword">select</span> t.<span class="operator">*</span> </span><br><span class="line"><span class="keyword">from</span> (<span class="keyword">select</span> name, <span class="built_in">max</span>(score) m <span class="keyword">from</span> t <span class="keyword">GROUP</span> <span class="keyword">BY</span> name) b, t</span><br><span class="line"><span class="keyword">where</span> t.name<span class="operator">=</span>b.name <span class="keyword">and</span> t.score<span class="operator">=</span>b.m</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>[1]:<a href="https://blog.csdn.net/zb199738/article/details/102767660">https://blog.csdn.net/zb199738/article/details/102767660</a>	“参考链接”</p>
-]]></content>
-      <categories>
-        <category>面试相关</category>
-      </categories>
-      <tags>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>梯度消失、梯度爆炸怎么解决</title>
-    <url>/2023/11/20b3b53ad2ba.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
-<p>梯度消失与梯度爆炸其实是一种情况，看参考链接的文章就知道了。</p>
-</blockquote>
-<p>两种情况下梯度消失经常出现，一是在<strong>深层网络</strong>中，二是采用了<strong>不合适的损失函数</strong>，比如sigmoid。梯度爆炸一般出现在深层网络和权值初始化值太大的情况下。</p>
-<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><ol>
-<li><p>预训练加微调。</p>
-<p>此思想相当于是先寻找局部最优，然后整合起来寻找全局最优，此方法有一定的好处，但是目前应用的不是很多了。此方法来自Hinton在2006年发表的一篇论文，Hinton为了解决梯度的问题，提出采取无监督逐层训练方法，其基本思想是每次训练一层隐节点，训练时将上一层隐节点的输出作为输入，而本层隐节点的输出作为下一层隐节点的输入，此过程就是逐层“预训练”（pre-training）；在预训练完成后，再对整个网络进行“微调”（fine-tunning）。</p>
-</li>
-<li><p>梯度剪切、权重正则（针对梯度爆炸）。</p>
-<p><strong>梯度剪切</strong>这个方案主要是针对梯度爆炸提出的，其思想是设置一个梯度剪切阈值，然后更新梯度的时候，如果梯度超过这个阈值，那么就将其强制限制在这个范围之内。这可以防止梯度爆炸。</p>
-<p><strong>权重正则化</strong>（weithts regularization）比较常见的是l1正则，和l2正则，在各个深度框架中都有相应的API可以使用正则化。</p>
-</li>
-<li><p>使用不同的激活函数。</p>
-<p>relu、leakrelu、elu等激活函数。</p>
-</li>
-<li><p>使用batchnorm。</p>
-<p>Batchnorm本质上是解决反向传播过程中的梯度问题。batchnorm全名是batch normalization，简称BN，即批规范化，通过规范化操作将输出信号x规范化到均值为0，方差为1保证网络的稳定性。</p>
-</li>
-<li><p>使用残差结构。</p>
-<p>事实上，就是残差网络的出现导致了image net比赛的终结，自从残差提出后，几乎所有的深度网络都离不开残差的身影，相比较之前的几层，几十层的深度网络，在残差网络面前都不值一提，残差可以很轻松的构建几百层，一千多层的网络而不用担心梯度消失过快的问题，原因就在于残差的捷径（shortcut）部分</p>
-</li>
-<li><p>使用LSTM网络。</p>
-<p>LSTM全称是<strong>长短期记忆网络</strong>（long-short term memory networks），是不那么容易发生梯度消失的，主要原因在于LSTM内部复杂的“门”(gates)。LSTM通过它内部的“门”可以接下来更新的时候“记住”前几次训练的”残留记忆“，因此，经常用于生成文本中。目前也有基于CNN的LSTM，之后可以尝试一下。</p>
-</li>
-</ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://zhuanlan.zhihu.com/p/622605118?utm_id=0">https://zhuanlan.zhihu.com/p/622605118?utm_id=0</a>	“参考链接1”</p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>过拟合和欠拟合怎么解决</title>
-    <url>/2023/11/c1a54a404412.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="问题的原因"><a href="#问题的原因" class="headerlink" title="问题的原因"></a>问题的原因</h2><blockquote>
-<p>过拟合和欠拟合是机器学习中常见的问题。</p>
-</blockquote>
-<ul>
-<li><strong>过拟合</strong>指的是模型过于复杂，在训练数据上表现良好，但是在新数据上表现却很差。</li>
-<li><strong>欠拟合</strong>指的是模型在训练集、验证集和测试集上均表现不佳的情况。</li>
-</ul>
-<h2 id="解决的方法"><a href="#解决的方法" class="headerlink" title="解决的方法"></a>解决的方法</h2><blockquote>
-<p>过拟合和欠拟合的解决办法较为相对，反面基本可以解决另一个问题。下面谈谈针对过拟合。</p>
-</blockquote>
-<ol>
-<li><p>增加数据量。</p>
-<p>当数据量较少时，模型容易过拟合。因此，增加数据量是解决过拟合问题的重要方法之一。如果数据集无法扩充，可以通过数据增强的方式来达到类似的效果。</p>
-</li>
-<li><p>简化模型结构。</p>
-<p>过于复杂的模型容易导致过拟合。因此，可以通过简化模型结构的方式来解决过拟合问题。例如，减少深度学习模型的层数、减少神经元数量等。此外，也可以通过增加正则化项来限制模型的复杂度。</p>
-</li>
-<li><p>采用正则化方法。</p>
-<p>正则化是一种常用的防止过拟合的方法。它通过在损失函数中加入正则化项，对模型参数进行惩罚，从而限制模型的复杂度。常见的正则化方法包括L1正则化、L2正则化等。</p>
-</li>
-<li><p>采用Dropout方法。</p>
-<p>Dropout是一种常用的防止过拟合的方法。它通过在训练过程中随机地将一些神经元的输出置为0，从而强制模型学习到多种特征表示。这样可以使得模型更加鲁棒，防止过拟合。</p>
-</li>
-<li><p>交又验证。</p>
-<p>交又验证是一种常用的评估模型性能的方法。它将数据集分为若干份每次将其中一份作为验证集，其余部分作为训练集。这样可以多次训练模型，并在验证集上进行测试，从而得到一个更加准确的模型性能评估结果。</p>
-</li>
-</ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html">https://wenku.baidu.com/view/b718aa443269a45177232f60ddccda38376be1e6.html</a>	“参考链接1”<br>[2]:<a href="https://blog.csdn.net/m0_69082030/article/details/128175288">https://blog.csdn.net/m0_69082030/article/details/128175288</a>	“参考链接2”</p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>C++容器之填充递增序列</title>
-    <url>/2023/11/2fc88ef6a3e9.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="iota函数介绍："><a href="#iota函数介绍：" class="headerlink" title="iota函数介绍："></a>iota函数介绍：</h2><blockquote>
-<p>C++标准库提供了丰富的算法，其中之一就是iota算法。iota算法用于填充一个区间，以递增的方式给每个元素赋予一个值。</p>
-<p>iota算法是C++标准库中的一个函数模板，用于填充一个区间。它通过指定一个起始值，并根据区间的长度递增生成后续的值。它有助于快速生成递增的序列。</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;numeric&gt;</span></span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="函数原型："><a href="#函数原型：" class="headerlink" title="函数原型："></a>函数原型：</h2><blockquote>
-<p>first 和 last 是迭代器，表示要填充的区间的起始位置和结束位置。<br>value 是起始值，该值将根据区间的长度逐步增加。<br>无返回值。</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">class</span> <span class="title class_">ForwardIt</span>, <span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">iota</span><span class="params">(ForwardIt first, ForwardIt last, T value)</span></span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="示例代码："><a href="#示例代码：" class="headerlink" title="示例代码："></a>示例代码：</h2><blockquote>
-<p>示例1：vector</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::vector&lt;<span class="type">int</span>&gt; <span class="title">nums</span><span class="params">(<span class="number">5</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">iota</span>(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>(), <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; num : nums) &#123;</span><br><span class="line">        std::cout &lt;&lt; num &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">1 2 3 4 5</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">在这个示例中，我们创建了一个长度为5的整数向量nums，并使用iota算法填充了向量的元素。起始值为1，根据向量的长度递增生成后续的值。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>示例2：list</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;list&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::list&lt;<span class="type">char</span>&gt; <span class="title">chars</span><span class="params">(<span class="number">4</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">iota</span>(chars.<span class="built_in">begin</span>(), chars.<span class="built_in">end</span>(), <span class="string">&#x27;A&#x27;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; ch : chars) &#123;</span><br><span class="line">        std::cout &lt;&lt; ch &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">A B C D</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">在这个示例中，我们创建了一个长度为4的字符型列表chars，并使用iota算法填充了列表的元素。起始值为’A’，根据列表的长度递增生成后续的值。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>示例3：array</p>
-</blockquote>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头文件</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;numeric&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;array&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::array&lt;<span class="type">float</span>, 6&gt; values;</span><br><span class="line"></span><br><span class="line">    std::<span class="built_in">iota</span>(values.<span class="built_in">begin</span>(), values.<span class="built_in">end</span>(), <span class="number">1.5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; val : values) &#123;</span><br><span class="line">        std::cout &lt;&lt; val &lt;&lt; <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    std::cout &lt;&lt; std::endl;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">1.5 2.5 3.5 4.5 5.5 6.5</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">在这个示例中，我们创建了一个大小为6的浮点型数组values，并使用iota算法填充了数组的元素。起始值为1.5，根据数组的大小递增生成后续的值。</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://developer.aliyun.com/article/1350264">https://developer.aliyun.com/article/1350264</a>	“参考资料1”</p>
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>刷题</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux僵尸进程相关问题</title>
-    <url>/2023/11/f73dfc9b8e43.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="僵尸进程的产生："><a href="#僵尸进程的产生：" class="headerlink" title="僵尸进程的产生："></a>僵尸进程的产生：</h2><p>Linux下进程有种状态叫做僵尸状态</p>
-<p>原因是父进程<code>fork()</code>出来的子进程结束之后，内核会给父进程发送一个<code>SIGCHLD信号</code></p>
-<blockquote>
-<p>这个SIGCHLD信号的作用是，及时通知父进程子进程的退出，让父进程通过一系列手段将他回收</p>
-<p>回收的意义:</p>
-<ol>
-<li>避免僵尸进程的产生，内存泄漏</li>
-<li>且使得父进程能拿到子进程的退出状态，进行相应处理</li>
-</ol>
-</blockquote>
-<p>如果父进程没有忽略这个信号(设置SIG_IGN)，也没有等待(wait)子进程，而且结束的也比子进程晚(不能托管被init1号进程领养)，并且也没有handler捕捉这个信号，那子进程就会进入僵尸状态; 维护者自己的task_struct开销，这也是一种内存泄露;</p>
-<h2 id="解决方式："><a href="#解决方式：" class="headerlink" title="解决方式："></a>解决方式：</h2><ol>
-<li><p>父进程阻塞调用wait()。</p>
-<p>调用细节：进程一旦调用了wait，就立即<strong>阻塞自己</strong>，由wait自动分析是否当前进程的<strong>某个</strong>子进程已经退出，如果让它找到了这样一个已经变成僵尸的子进程，wait就会收集这个子进程的信息，并把它彻底销毁后返回；如果没有找到这样一个子进程，wait就会<strong>一直阻塞</strong>在这里，直到有一个出现为止。</p>
-<p>缺点：显然wait的调用是非常不合理的，阻塞时等待会让父进程干不了别的事情。</p>
-</li>
-<li><p>父进程非阻塞调用waitpid()。</p>
-<p>根据源码的观察，不难发现，其实wait就是waitpid的一种封装。</p>
-<p>缺点：waitpid虽然不会阻塞时等待，但是也需要占用cpu资源，定期的轮训waitpid看看有没有子进程处于僵尸状态，以便将他回收，也是有一定开销的。</p>
-</li>
-<li><p>SIGCHLD信号。</p>
-<blockquote>
-<p>其实我们的子进程每次终止时<strong>内核</strong>都会给父进程发送一个<strong>SIGCHLD信号</strong>，如果<strong>父进程没有处理这个信号，也没有等待(wait)子进程</strong>，那他就会进入僵尸状态</p>
-</blockquote>
-<p>既然这样，我们可以用<strong>signal()函数+waitpid()接口</strong>处理一下这个信号，答到一个子进程退出之后，主动通知父进程将其回收的<strong>异步通知作用</strong>！(显然效率是比父进程主动wait和waitpid这种同步处理高！)</p>
-<p>注意，handler中使用while循环处理回收任务的原因是:SIGCHILD是个非可靠信号！</p>
-<p>一个父进程可能有很多子进程，如果多个子进程同时退出，SIGCHILD会出现信号丢失(只存在1个)。如果用if处理，也就只处理一个子进程。剩下的子进程也就变成了僵尸进程!</p>
-<p>因此我们发现有子进程退出，就用while循环来处理，如果恰好多个子进程退出，即便信号丢失，我们也能while通过waitpid的返回值不断释放他们，即便只有一个子进程退出，第二次循环waitpid会返回0，我们也会跳出循环！</p>
-</li>
-<li><p>SIG_IGN信号。</p>
-<p>解决僵尸进程还有一个方式，就是让他变为“孤儿进程”，也就是init1号进程领养托管，进而释放这个子进程的资源！</p>
-<p>除了让父进程退出的比子进程早之外，我们可以通过如下操作，将SIGCHLD信号的处理方式设置为SIG_IGN–&gt;<strong>忽略</strong>，这样代表父进程忽视了这个信号，子进程相当于被弃养，会被init1号进程领养。</p>
-<p>这样可让内核把僵尸子进程转交给init1号进程去处理释放，省去了父进程wait这个子进程的麻烦。</p>
-<p>这个小技巧常常被用于提升并发服务器的性能！</p>
-</li>
-</ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://blog.csdn.net/wtl666_6/article/details/129513009">https://blog.csdn.net/wtl666_6/article/details/129513009</a>	“参考资料1”</p>
-]]></content>
-      <categories>
-        <category>面试相关</category>
-      </categories>
-      <tags>
-        <tag>面试</tag>
-        <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>《MySQL是怎样运行的：从根儿上理解MySQL》笔记</title>
-    <url>/2023/11/7903b9c54b9d.html</url>
-    <content><![CDATA[<p>[TOC]</p>
-<h2 id="0-前言"><a href="#0-前言" class="headerlink" title="0. 前言"></a>0. 前言</h2><blockquote>
-<p>作者联系方式：</p>
-<p>微信： xiaohaizi4919</p>
-<p>公众号：我们都是小青蛙</p>
-</blockquote>
-<ul>
-<li>该书只是介绍 MySQL 内核的一些核心概念的小白进阶书籍</li>
-<li>学习方法：<strong>不要跳着看！！！</strong></li>
-</ul>
-<h2 id="1-重新认识MySQL"><a href="#1-重新认识MySQL" class="headerlink" title="1. 重新认识MySQL"></a>1. 重新认识MySQL</h2><ul>
-<li><p>MySQL也是基于<strong>客户端／服务器架构</strong>的。</p>
-</li>
-<li><p>大概流程是：用户使用MySQL客户端来连接MySQL服务器，成功连接之后向服务器进程发送请求并得到回复的</p>
-<p>过程。</p>
-</li>
-<li><p>MySQL服务器处理客户端请求的流程如下图1所示</p>
-<ul>
-<li><img src="/./images/1.png"></li>
-</ul>
-</li>
-<li><p>为什么叫<code>引擎</code>呢？因为这个名字更拉风～以前叫做<code>表处理器</code>。为了管理方便，人们把 <strong>连接管理 、 查询缓存 、 语法解析 、 查询优化</strong> 这些并不涉及<strong>真实数据存储</strong>的功能划分为 MySQL server 的功能，把真实存取数据的功能划分为 <strong>存储引擎</strong> 的功能。（有没有很熟悉的操作？网络的分层结构也是如此，下层对上层提供服务，上层依赖下层）</p>
-</li>
-<li><p>MySQL支持非常多种存储引擎，最常用的就是 <strong>InnoDB 和 MyISAM</strong> ，有时会提一下 <strong>Memory</strong> 。<strong>默认的存储引擎为</strong> <strong>InnoDB</strong> 。</p>
-</li>
-<li><p>存储引擎是负责对表中的数据进行提取和写入工作的，<strong>我们可以为不同的表设置不同的存储引擎</strong>，也就是说不同的表可以有不同的物理存储结构，不同的提取和写入方式。</p>
-</li>
-</ul>
-<h2 id="2-其他"><a href="#2-其他" class="headerlink" title="2. 其他"></a>2. 其他</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>数据库</tag>
-        <tag>MySQL</tag>
       </tags>
   </entry>
 </search>
