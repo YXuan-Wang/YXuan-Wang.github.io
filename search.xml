@@ -735,7 +735,7 @@
 <li>里氏代换原则（Liskov Substitution Principle）：对开闭原则的补充。实现抽象的规范，实现子父类互相替换。</li>
 <li>依赖倒转原则（Dependence Inversion Principle）：是开闭原则的基础。针对接口编程，实现开闭原则的基础。</li>
 <li>接口隔离原则（Interface Segregation Principle）：降低耦合度，接口单独设计，互相隔离。</li>
-<li>迪米特法则，又称不知道原则（Demeter Principle）：功能模块尽量独立。</li>
+<li>迪米特法则，又称最少知道原则（Demeter Principle）：功能模块尽量独立。</li>
 <li>合成复用原则（Composite Reuse Principle）：尽量使用聚合，组合，而不是继承。</li>
 </ul>
 <h2 id="1-创建型模式"><a href="#1-创建型模式" class="headerlink" title="1. 创建型模式"></a>1. 创建型模式</h2><blockquote>
