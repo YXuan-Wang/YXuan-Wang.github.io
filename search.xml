@@ -495,7 +495,19 @@
 <li><p>存储引擎是负责对表中的数据进行提取和写入工作的，<strong>我们可以为不同的表设置不同的存储引擎</strong>，也就是说不同的表可以有不同的物理存储结构，不同的提取和写入方式。</p>
 </li>
 </ul>
-<h2 id="2-其他"><a href="#2-其他" class="headerlink" title="2. 其他"></a>2. 其他</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+<h2 id="2-MySQL的调控按钮-启动选项和系统变量"><a href="#2-MySQL的调控按钮-启动选项和系统变量" class="headerlink" title="2. MySQL的调控按钮-启动选项和系统变量"></a>2. MySQL的调控按钮-启动选项和系统变量</h2><ul>
+<li>在程序启动时指定的设置项也称之为<strong>启动选项（startup options）</strong>，这些选项控制着程序启动后的行为。</li>
+<li>所以在启动服务器程序的命令行后边指定启动选项的通用格式就是这样的：<code>--启动选项1[=值1] --启动选项2[=值2] ... --启动选项n[=值n]</code>，需要注意，<strong>选项名、&#x3D;、选项值之间不可以有空白字符</strong>。</li>
+<li>每个MySQL程序都有许多不同的选项。大多数程序提供了一个<code>--help</code>选项，你可以查看该程序支持的全部启动选项以及它们的默认值。例如，使用 <code>mysql --help</code> 可以看到 mysql 程序支持的启动选项， <code>mysqld_safe --help</code> 可以看到 mysqld_safe 程序支持的启动选项。查看 mysqld 支持的启动选项有些特别，需要使用 <code>mysqld --verbose --help</code> 。</li>
+<li><code>启动选项</code> 是在程序启动时我们程序员传递的一些参数，而 <code>系统变量</code> 是影响服务器程序运行行为的变量，它们之间的关系如下：<ul>
+<li>大部分的系统变量都可以被当作启动选项传入。</li>
+<li>有些系统变量是在程序运行过程中自动生成的，是不可以当作启动选项来设置，比如<code>auto_increment_offset</code> 、 <code>character_set_client</code> 啥的。</li>
+<li>有些启动选项也不是系统变量，比如 defaults-file 。</li>
+</ul>
+</li>
+<li>为了让我们更好的了解服务器程序的运行情况， MySQL 服务器程序中维护了好多关于程序运行状态的变量，它们被称为 <code>状态变量</code> 。由于 <code>状态变量</code> 是用来显示服务器程序运行状况的，所以它们的值只能由<strong>服务器程序自己来设置</strong>，我们程序员是不能设置的。与 <code>系统变量</code> 类似， <code>状态变量</code> 也有 <code>GLOBAL</code> 和 <code>SESSION</code> 两个作用范围的，所以查看 状态变量 的语句可以这么写：<code>SHOW [GLOBAL|SESSION] STATUS [LIKE 匹配的模式];</code></li>
+</ul>
+<h2 id="3-n"><a href="#3-n" class="headerlink" title="3. n"></a>3. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
 ]]></content>
       <categories>
         <category>数据库</category>
