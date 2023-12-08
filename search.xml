@@ -545,7 +545,33 @@
 </ul>
 </li>
 </ul>
-<h2 id="4-InnoDB记录结构"><a href="#4-InnoDB记录结构" class="headerlink" title="4. InnoDB记录结构"></a>4. InnoDB记录结构</h2><h2 id="5-n"><a href="#5-n" class="headerlink" title="5. n"></a>5. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+<h2 id="4-InnoDB记录结构"><a href="#4-InnoDB记录结构" class="headerlink" title="4. InnoDB记录结构"></a>4. InnoDB记录结构</h2><ul>
+<li><p>MySQL 服务器上负责对表中数据的读取和写入工作的部分是 <code>存储引擎</code> ，而服务器又支持不同类型的存储引擎，比如 InnoDB 、 MyISAM 、 Memory 啥的，不同的存储引擎一般是由不同的人为实现不同的特性而开发的，<strong>真实数据在不同存储引擎中存放的格式一般是不同的</strong>。由于 InnoDB 是 MySQL 默认的存储引擎，本节以 <strong>InnoDB 引擎</strong>的内部实现为例，了解了一个存储引擎的数据存储结构之后，其他的存储引擎都是依葫芦画瓢。</p>
+</li>
+<li><p>InnoDB页：<br>InnoDB 采取的方式是：将数据划分为若干个页，<strong>以页作为磁盘和内存之间交互的基本单位</strong>，InnoDB中页的大小 一般为 16 KB。也就是在一般情况下，一次最少从磁盘中读取16KB的内容到内存中，一次最少把内存中的16KB内容刷新到磁盘中。</p>
+</li>
+<li><p>InnoDB行格式：我们平时是以记录为单位来向表中插入数据的，这些记录在磁盘上的存放方式也被称为 <code>行格式</code> 或者 <code>记录格式</code> 。<br>设计 InnoDB 存储引擎的大叔们到现在为止设计了4种不同类型的 行格式 ，分别是 Compact 、 Redundant 、Dynamic 和 Compressed 行格式。</p>
+</li>
+<li><p>COMPACT行格式：</p>
+<ul>
+<li>一条完整的记录其实可以被分为 <strong>记录的额外信息</strong> 和 <strong>记录的真实数据</strong> 两大部分。<strong>记录的额外信息</strong>是服务器为了描述这条记录而不得不额外添加的一些信息。</li>
+<li><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/2.png"></li>
+</ul>
+</li>
+<li><p>Redundant行格式：</p>
+<ul>
+<li><p>Redundant 行格式是 MySQL5.0 之前用的一种行格式，也就是说它已经非常老了，但是本着知识完整性的角度还是要提一下，大家乐呵乐呵的看就好。</p>
+</li>
+<li><p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/3.png"></p>
+</li>
+<li><p>行溢出：MySQL中一个页的大小一般是 16KB，当记录中的数据太多，当前页放不下的时候，会把多余的数据存储到其他页中。这种现象就叫<strong>行溢出</strong>。<br>那发生 <strong>行溢出</strong> 的临界点是什么呢？也就是说在列存储多少字节的数据时就会发生 行溢出 ？<br><strong>MySQL 中规定一个页中至少存放两行记录</strong>，至于为什么这么规定我们之后再说，这个规定就会对行溢出的判断造成的影响。至少两条记录。</p>
+</li>
+</ul>
+</li>
+<li><p>Dynamic和Compressed行格式：<br>这两种行格式类似于 COMPACT行格式 ，只不过在处理行溢出数据时有点儿分歧，它们不会在记录的真实据处存储字符串的前768个字节，而是<strong>把所有的字节都存储到其他页面中</strong>，只在记录的真实数据处存储其他页面的地址。<br>另外， Compressed 行格式会采用<strong>压缩算法</strong>对页面进行压缩。<br>MySQL5.7的默认行格式就是 Dynamic 。</p>
+</li>
+</ul>
+<h2 id="5-InnoDB数据页结构"><a href="#5-InnoDB数据页结构" class="headerlink" title="5. InnoDB数据页结构"></a>5. InnoDB数据页结构</h2><h2 id="6-n"><a href="#6-n" class="headerlink" title="6. n"></a>6. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
 ]]></content>
       <categories>
         <category>数据库</category>
