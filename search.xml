@@ -571,7 +571,47 @@
 <li><p>Dynamic和Compressed行格式：<br>这两种行格式类似于 COMPACT行格式 ，只不过在处理行溢出数据时有点儿分歧，它们不会在记录的真实据处存储字符串的前768个字节，而是<strong>把所有的字节都存储到其他页面中</strong>，只在记录的真实数据处存储其他页面的地址。<br>另外， Compressed 行格式会采用<strong>压缩算法</strong>对页面进行压缩。<br>MySQL5.7的默认行格式就是 Dynamic 。</p>
 </li>
 </ul>
-<h2 id="5-InnoDB数据页结构"><a href="#5-InnoDB数据页结构" class="headerlink" title="5. InnoDB数据页结构"></a>5. InnoDB数据页结构</h2><h2 id="6-n"><a href="#6-n" class="headerlink" title="6. n"></a>6. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+<h2 id="5-InnoDB数据页结构"><a href="#5-InnoDB数据页结构" class="headerlink" title="5. InnoDB数据页结构"></a>5. InnoDB数据页结构</h2><ul>
+<li><p>一般来说，InnoDB中一个页的大小一般是16KB。InnoDB 为了不同的目的而设计了<strong>许多种不同类型的 页</strong> ，比如存放表空间头部信息的页，存放 Insert Buffer 信息的页，存放 INODE 信息的页，存放 undo 日志信息的页等等。</p>
+</li>
+<li><p>官方称存放记录的页为<strong>索引（ INDEX ）页</strong>，而这些表中的记录就是我们日常口中所称的 <strong>数据</strong> ，所以目前还是叫这种存放记录的页为 <strong>数据页</strong>。</p>
+</li>
+<li><p>数据页结构图如下，从图中可以看出，一个 InnoDB 数据页的存储空间大致被划分成了 7 个部分，有的部分占用的字节数是确定的，有的部分占用的字节数是不确定的。</p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/4.png"></p>
+</li>
+<li><p>User Records 部分：<br>我们自己存储的记录会按照我们指定的 <strong>行格式</strong> 存储到 <strong>User Records</strong> 部分。<br>在一开始生成页的时候，其实并没有 User Records 这个部分，每当我们插入一条记录，都会从 <strong>Free Space</strong> 部分，也就是尚未使用的存储空间中申请一个记录大小的空间划分到 User Records 部分，当 Free Space 部分的空间全部被 User Records 部分替代掉之后，也就意味着这个页使用完了，如果还有新的记录插入的话，就需要去申请新的页了。</p>
+<p>记录在页中按照<strong>主键值由小到大</strong>顺序串联成一个<strong>单链表</strong>。</p>
+</li>
+<li><p>Page Directory（页目录）：</p>
+<ol>
+<li>将所有正常的记录（包括最大和最小记录，不包括标记为已删除的记录）划分为几个组。</li>
+<li>每个组的最后一条记录（也就是组内最大的那条记录）的头信息中的 n_owned 属性表示该记录拥有多少条记录，也就是该组内共有几条记录。</li>
+<li>将每个组的最后一条记录的地址偏移量单独提取出来按顺序存储到靠近 <code>页</code> 的尾部的地方，这个地方就是所谓的 Page Directory ，也就是 页目录 （此时应该返回头看看页面各个部分的图）。页面目录中的这些地址偏移量被称为 槽 （英文名： Slot ），所以这个页面目录就是由 槽 组成的。</li>
+</ol>
+<p>设计 InnoDB 的大叔们对每个分组中的记录条数是有规定的：对于最小记录所在的分组只能有 1 条记录，最大记录所在的分组拥有的记录条数只能在 1<del>8 条之间，剩下的分组中记录的条数范围只能在是 4</del>8 条之间。</p>
+<p>因为各个槽代表的记录的主键值都是从小到大排序的，所以我们可以使用所谓的 <strong>二分法</strong> 来进行快速查找。在一个数据页中查找指定主键值的记录的过程分为两步：</p>
+<ol>
+<li>通过二分法确定该记录所在的槽，并找到该槽中主键值最小的那条记录。</li>
+<li>通过记录的 next_record 属性遍历该槽所在的组中的各个记录。</li>
+</ol>
+</li>
+<li><p>Page Header（页面头部）：</p>
+<p>占用固定的 56 个字节，专门针对 <strong>数据页</strong> 记录的各种状态信息。</p>
+</li>
+<li><p>File Header（文件头部）：</p>
+<p>占用固定的 38 个字节，针对各种类型的页都通用。也就是说不同类型的页都会以 File Header 作为第一个组成部分，它描述了一些针对各种页都通用的一些信息，比方说这个页的编号是多少，它的上一个页、下一个页是谁等等。</p>
+<ul>
+<li>FIL_PAGE_SPACE_OR_CHKSUM：代表当前页面的校验和（checksum）。</li>
+<li>FIL_PAGE_OFFSET：每一个 页 都有一个单独的页号，就跟你的身份证号码一样， InnoDB 通过页号来可以唯一定位一个 页 。</li>
+<li>FIL_PAGE_TYPE：代表当前 页 的类型。其中，存放记录的数据页的类型其实是 <code>FIL_PAGE_INDEX</code> ，也就是所谓的 <code>索引页</code> 。</li>
+<li>FIL_PAGE_PREV 和 FIL_PAGE_NEXT：分别代表本页的上一个和下一个页的页号。这样通过建立一个双向链表把许许多多的页就都串联起来了。<strong>注意：并不是所有类型的页都有上一个和下一个页的属性。</strong></li>
+</ul>
+</li>
+<li><p>File Trailer：</p>
+<p>由 8 个字节组成，与 File Header 类似，都是所有类型的页通用的。其中，前4个字节代表页的校验和，后4个字节代表页面被最后修改时对应的日志序列位置（LSN），也是为了校验页的完整性的。</p>
+</li>
+</ul>
+<h2 id="6-快速查询的秘籍-B-树索引"><a href="#6-快速查询的秘籍-B-树索引" class="headerlink" title="6. 快速查询的秘籍-B+树索引"></a>6. 快速查询的秘籍-B+树索引</h2><h2 id="7-n"><a href="#7-n" class="headerlink" title="7. n"></a>7. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
 ]]></content>
       <categories>
         <category>数据库</category>
