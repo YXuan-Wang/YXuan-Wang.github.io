@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://example.com/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/4.png">
 <meta property="og:image" content="http://example.com/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/5.png">
 <meta property="article:published_time" content="2023-11-30T04:06:47.000Z">
-<meta property="article:modified_time" content="2023-12-18T09:28:26.321Z">
+<meta property="article:modified_time" content="2023-12-18T12:51:39.350Z">
 <meta property="article:author" content="YXuan-Wang">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="MySQL">
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-12-18 17:28:26" itemprop="dateModified" datetime="2023-12-18T17:28:26+08:00">2023-12-18</time>
+                <time title="修改时间：2023-12-18 20:51:39" itemprop="dateModified" datetime="2023-12-18T20:51:39+08:00">2023-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -495,7 +495,60 @@
 <p><strong>避免冗余和重复索引</strong>。</p>
 </li>
 </ul>
-<h2 id="8-数据的家-MySQL的数据目录"><a href="#8-数据的家-MySQL的数据目录" class="headerlink" title="8. 数据的家-MySQL的数据目录"></a>8. 数据的家-MySQL的数据目录</h2><h2 id="9-n"><a href="#9-n" class="headerlink" title="9. n"></a>9. n</h2><h2 id="10-n"><a href="#10-n" class="headerlink" title="10. n"></a>10. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a target="_blank" rel="noopener" href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+<h2 id="8-数据的家-MySQL的数据目录"><a href="#8-数据的家-MySQL的数据目录" class="headerlink" title="8. 数据的家-MySQL的数据目录"></a>8. 数据的家-MySQL的数据目录</h2><ul>
+<li><p><strong>数据库和文件系统的关系</strong>：像 InnoDB 、 MyISAM 这样的存储引擎都是把表存储在文件系统（操作系统用来管理磁盘）上的。</p>
+</li>
+<li><p><strong>MySQL数据目录</strong>：MySQL服务器程序在启动时会到文件系统的某个目录下加载一些文件，之后在运行过程中产生的数据也都会存储到这个目录下的某些文件中，这个目录就称为 <code>数据目录</code> 。</p>
+<p><strong>数据目录和安装目录的区别</strong>：一定要区分开两者区别。安装目录是安装MySQL的位置。其实，数据目录对应着一个系统变量 <code>datadir</code> ，使用 <code>SHOW VARIABLES LIKE &#39;datadir&#39;;</code> 查询数据目录即可。</p>
+</li>
+<li><p><strong>数据目录的结构</strong>：</p>
+<ul>
+<li><p><strong>数据库在文件系统中的表示</strong>：<br>使用 <code>CREATE DATABASE 数据库名</code> 语句创建一个数据库的时候，在文件系统上实际发生了什么呢？其实，每个数据库都对应数据目录下的一个子目录，或者说对应一个文件夹，我们每当我们新建一个数据库时， MySQL 会帮我们做这两件事儿：</p>
+<ol>
+<li>在 数据目录 下创建一个和数据库名同名的子目录（或者说是文件夹）。</li>
+<li>在该与数据库名同名的子目录下创建一个名为 db.opt 的文件，这个文件中包含了该数据库的各种属性，比方说该数据库的字符集和比较规则是个啥。</li>
+</ol>
+</li>
+<li><p><strong>表在文件系统中的表示</strong>：</p>
+<p>我们的数据其实都是以记录的形式插入到表中的，每个表的信息其实可以分为两种：</p>
+<ol>
+<li><p>表结构的定义：包含该表的名称、表里边有多少列、每个列的数据类型是啥、有啥约束条件和索引、用的是啥字符集和比较规则吧啦吧啦的各种信息。 <code>InnoDB</code> 和 <code>MyISAM</code> 这两种存储引擎都在数据库子目录下创建了一个专门用于描述表结构的文件，文件名是这样 <code>表名.frm</code> ，以二进制格式存储。</p>
+</li>
+<li><p>表中的数据：不同的存储引擎就存在不同的存储表中数据方式，以InnoDB为例。<br>设计 InnoDB 的大叔们提出了一个 <code>表空间</code> 或者 <code>文件空间</code> （英文名： table space 或者 file space ）的概念，这个表空间是一个抽象的概念，它可以对应文件系统上一个或多个真实文件（不同表空间对应的文件数量可能不同）。每一个 <code>表空间</code> 可以被划分为很多很多很多个 <code>页</code> ，我们的表数据就存放在某个 <code>表空间</code> 下的某些页里。设计 InnoDB 的大叔将表空间划分为几种不同的类型：</p>
+<ul>
+<li><p>系统表空间（system tablespace）：<br>这个所谓的 系统表空间 可以对应文件系统上一个或多个实际的文件，默认情况下， InnoDB 会在 数据目录 下创建一个名为 ibdata1 、大小为 12M 的文件，这个文件就是对应的 系统表空间 在文件系统上的表示。并且这个文件是所谓的自扩展文件 ，也就是当不够用的时候它会自己增加文件大小。需要注意的是，<strong>在一个MySQL服务器中，系统表空间只有一份</strong>。从MySQL5.5.7到MySQL5.6.6之间的各个版本中，我们表中的数据都会被默认存储到这个 系统表空间。</p>
+</li>
+<li><p>独立表空间(file-per-table tablespace)：<br>在MySQL5.6.6以及之后的版本中， InnoDB 并不会默认的把各个表的数据存储到系统表空间中，而是为每一个表建立一个独立表空间，也就是说我们创建了多少个表，就有多少个独立表空间。使用 独立表空间 来存储表数据的话，会在该表所属数据库对应的子目录下创建一个表示该 独立表空间 的文件，文件名和表名相同，只不过添加了一个 .ibd 的扩展名而已，所以完整的文件名称长这样： <code>表名.ibd</code> 。<br>比方说假如我们使用了 独立表空间 去存储 xiaohaizi 数据库下的 test 表的话，那么在该表所在数据库对应的xiaohaizi 目录下会为 test 表创建这两个文件：<code>test.frm</code>、<code>test.ibd</code>。其中 test.ibd 文件就用来存储 test 表中的数据和索引。<br>我们也可以自己指定使用 系统表空间 还是 独立表空间 来存储数据，这个功能由启动参数 innodb_file_per_table 控制，值为 0 时，代表使用系统表空间，值为 1 时，代表使用独立表空间。</p>
+</li>
+<li><p>其他类型的表空间：通用表空间（general tablespace）、undo表空间（undo tablespace）、临时表空间（temporary tablespace）</p>
+</li>
+</ul>
+<p>和 InnoDB 不同的是， <strong>MyISAM</strong> 并没有什么所谓的 表空间 一说，<strong>表数据都存放到对应的数据库子目录下</strong>。<br>假如 test 表使用 MyISAM 存储引擎的话，那么在它所在数据库对应的 xiaohaizi 目录下会为 test 表创建这三个文件：<code>test.frm</code>、<code>test.MYD</code>、<code>test.MYI</code>。其中 test.MYD 代表表的数据文件，也就是我们插入的用户记录； test.MYI 代表表的索引文件，我们为该表创建的索引都会放到这个文件中。</p>
+</li>
+</ol>
+</li>
+<li><p><strong>视图在文件系统中的表示</strong>：<br>MySQL 中的视图其实是虚拟的表，也就是某个查询语句的一个别名而已，所以在存储 视图 的时候是不需要存储真实的数据的，只需要把它的结构存储起来就行了。和 表 一样，描述视图结构的文件也会被存储到所属数据库对应的子目录下边，只会存储一个 <code>视图名.frm</code> 的文件。</p>
+</li>
+<li><p><strong>其他的文件</strong>： 数据目录下还包括为了更好运行程序的一些额外文件，主要包括服务器进程文件、服务器日志文件、默认&#x2F;自动生成的SSL和RSA证书和密钥文件。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>文件系统对数据库的影响</strong>：<br>因为 MySQL 的数据都是存在文件系统中的，就不得不受到文件系统的一些制约，这在数据库和表的命名、表的大小和性能方面体现的比较明显，比如下边这些方面：</p>
+<ul>
+<li>数据库名称和表名称不得超过文件系统所允许的最大长度。</li>
+<li>特殊字符的问题：为了避免因为数据库名和表名出现某些特殊字符而造成文件系统不支持的情况， MySQL 会把数据库名和表名中所有<code>除数字和拉丁字母以外</code>的所有字符在文件名里都映射成 <code>@+编码值</code> 的形式作为文件名。</li>
+<li>文件长度受文件系统最大长度限制。</li>
+</ul>
+</li>
+<li><p><strong>MySQL系统数据库简介</strong>：</p>
+<p>mysql：核心，它存储了MySQL的用户账户和权限信息，一些存储过程、事件的定义信息，一些运行过程中产生的日志信息，一些帮助信息以及时区信息等。</p>
+<p>information_schema：这个数据库保存着MySQL服务器维护的所有其他数据库的信息，比如有哪些表、哪些视图等等。这些信息并不是真实的用户数据，而是一些描述性信息，有时候也称之为元数据。</p>
+<p>performance_schema：主要保存MySQL服务器运行过程中的一些状态信息，算是对MySQL服务器的一个性能监控。</p>
+<p>sys：主要是通过视图的形式把 information_schema 和 performance_schema 结合起来，让程序员可以更方便的了解MySQL服务器的一些性能信息。</p>
+</li>
+</ul>
+<h2 id="9-存放页面的大池子-InnoDB的表空间"><a href="#9-存放页面的大池子-InnoDB的表空间" class="headerlink" title="9. 存放页面的大池子-InnoDB的表空间"></a>9. 存放页面的大池子-InnoDB的表空间</h2><p>- </p>
+<h2 id="10-n"><a href="#10-n" class="headerlink" title="10. n"></a>10. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a target="_blank" rel="noopener" href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
 
     </div>
 
@@ -581,7 +634,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL"><span class="nav-number">2.</span> <span class="nav-text">1. 重新认识MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-MySQL%E7%9A%84%E8%B0%83%E6%8E%A7%E6%8C%89%E9%92%AE-%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E5%92%8C%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">2. MySQL的调控按钮-启动选项和系统变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99"><span class="nav-number">4.</span> <span class="nav-text">3. 字符集和比较规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">4. InnoDB记录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">5. InnoDB数据页结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%BF%AB%E9%80%9F%E6%9F%A5%E8%AF%A2%E7%9A%84%E7%A7%98%E7%B1%8D-B-%E6%A0%91%E7%B4%A2%E5%BC%95"><span class="nav-number">7.</span> <span class="nav-text">6. 快速查询的秘籍-B+树索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-B-%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">7. B+树索引的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AE%B6-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">9.</span> <span class="nav-text">8. 数据的家-MySQL的数据目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-n"><span class="nav-number">10.</span> <span class="nav-text">9. n</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-n"><span class="nav-number">11.</span> <span class="nav-text">10. n</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">12.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%87%8D%E6%96%B0%E8%AE%A4%E8%AF%86MySQL"><span class="nav-number">2.</span> <span class="nav-text">1. 重新认识MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-MySQL%E7%9A%84%E8%B0%83%E6%8E%A7%E6%8C%89%E9%92%AE-%E5%90%AF%E5%8A%A8%E9%80%89%E9%A1%B9%E5%92%8C%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">2. MySQL的调控按钮-启动选项和系统变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%AD%97%E7%AC%A6%E9%9B%86%E5%92%8C%E6%AF%94%E8%BE%83%E8%A7%84%E5%88%99"><span class="nav-number">4.</span> <span class="nav-text">3. 字符集和比较规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-InnoDB%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">4. InnoDB记录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-InnoDB%E6%95%B0%E6%8D%AE%E9%A1%B5%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">5. InnoDB数据页结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%BF%AB%E9%80%9F%E6%9F%A5%E8%AF%A2%E7%9A%84%E7%A7%98%E7%B1%8D-B-%E6%A0%91%E7%B4%A2%E5%BC%95"><span class="nav-number">7.</span> <span class="nav-text">6. 快速查询的秘籍-B+树索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-B-%E6%A0%91%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">7. B+树索引的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AE%B6-MySQL%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9B%AE%E5%BD%95"><span class="nav-number">9.</span> <span class="nav-text">8. 数据的家-MySQL的数据目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-%E5%AD%98%E6%94%BE%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%A4%A7%E6%B1%A0%E5%AD%90-InnoDB%E7%9A%84%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">10.</span> <span class="nav-text">9. 存放页面的大池子-InnoDB的表空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-n"><span class="nav-number">11.</span> <span class="nav-text">10. n</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">12.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
