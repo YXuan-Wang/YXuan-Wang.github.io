@@ -749,8 +749,61 @@
 <p>sys：主要是通过视图的形式把 information_schema 和 performance_schema 结合起来，让程序员可以更方便的了解MySQL服务器的一些性能信息。</p>
 </li>
 </ul>
-<h2 id="9-存放页面的大池子-InnoDB的表空间"><a href="#9-存放页面的大池子-InnoDB的表空间" class="headerlink" title="9. 存放页面的大池子-InnoDB的表空间"></a>9. 存放页面的大池子-InnoDB的表空间</h2><p>- </p>
-<h2 id="10-n"><a href="#10-n" class="headerlink" title="10. n"></a>10. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
+<h2 id="9-存放页面的大池子-InnoDB的表空间"><a href="#9-存放页面的大池子-InnoDB的表空间" class="headerlink" title="9. 存放页面的大池子-InnoDB的表空间"></a>9. 存放页面的大池子-InnoDB的表空间</h2><ul>
+<li><p>任何类型的页都会包含这两个部分：<br>File Header ：记录页面的一些通用信息。<br>File Trailer ：校验页是否完整，保证从内存到磁盘刷新时内容的一致性。</p>
+</li>
+<li><p>独立表空间结构：</p>
+<p>表空间中的页实在是太多了，为了更好的管理这些页面，设计 InnoDB 的大叔们提出了 <code>区</code> （英文名： extent ）的概念。对于16KB的页来说，连续的64个页就是一个 区 ，也就是说一个区默认占用1MB空间大小。不论是系统表空间还是独立表空间，都可以看成是由若干个区组成的，每256个区被划分成一<code>组</code>。如下图：</p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/6.png"></p>
+<p>第一个组最开始的3个页面的类型是固定的，也就是说 extent 0 这个区最开始的3个页面的类型是固定的，分别是：</p>
+<ul>
+<li>FSP_HDR 类型：这个类型的页面是用来登记整个表空间的一些整体属性以及本组所有的256个区的属性。整个表空间只有<strong>一个</strong> FSP_HDR 类型的页面。</li>
+<li>IBUF_BITMAP 类型：这个类型的页面是存储本组所有的区的所有页面关于 INSERT BUFFER 的信息。</li>
+<li>INODE 类型：这个类型的页面存储了许多称为 INODE 的数据结构。</li>
+</ul>
+<p>其余各组最开始的2个页面的类型是固定的，分别是：</p>
+<ul>
+<li>XDES 类型：全称是 extent descriptor ，用来登记本组256个区的属性。上边介绍的 FSP_HDR 类型的页面其实和 XDES 类型的页面的作用类似，只不过 FSP_HDR 类型的页面还会额外存储一些表空间的属性。</li>
+<li>IBUF_BITMAP 类型：同上。</li>
+</ul>
+<p>如果不区分叶子节点和非叶子节点，统统把节点代表的页面放到申请到的区中的话，进行范围扫描的效果就大打折扣了。所以，设计 InnoDB 的大叔们对 B+ 树的叶子节点和非叶子节点进行了区别对待，也就是说叶子节点有自己独有的 区 ，非叶子节点也有自己独有的 区 。存放叶子节点的区的集合就算是一个 <code>段</code> （ segment ），存放非叶子节点的区的集合也算是一个 段 。也就是说一个索引会生成2个段，一个叶子节点段，一个非叶子节点段。</p>
+<p><strong>碎片（fragment）区</strong>直属于表空间，并不属于任何一个段。所以此后为某个段分配存储空间的策略是这样的：</p>
+<ul>
+<li>在刚开始向表中插入数据的时候，段是从某个碎片区以单个页面为单位来分配存储空间的。</li>
+<li>当某个段已经占用了32个碎片区页面之后，就会以完整的区为单位来分配存储空间。</li>
+</ul>
+<p>所以现在段不能仅定义为是某些区的集合，更精确的应该是某些零散的页面以及一些完整的区的集合。</p>
+<p><strong>区的分类：</strong>（这4种类型的区也可以被称为区的4种状态（ State ））</p>
+<ul>
+<li>空闲的区（FREE）：现在还没有用到这个区中的任何页面。</li>
+<li>有剩余空间的碎片区（FREE_FRAG）：表示碎片区中还有可用的页面。</li>
+<li>没有剩余空间的碎片区（FULL_FRAG）：表示碎片区中的所有页面都被使用，没有空闲页面。</li>
+<li><strong>附属于某个段</strong>的区（FSEG）。每一个索引都可以分为叶子节点段和非叶子节点段，除此之外InnoDB还会另外定义一些特殊作用的段，在这些段中的数据量很大时将使用区来作为基本的分配单位。</li>
+</ul>
+<p>为了方便管理这些区，设计 InnoDB 的大叔设计了一个称为 XDES Entry 的结构（全称就是Extent Descriptor Entry），每一个区都对应着一个 XDES Entry 结构，这个结构记录了对应的区的一些属性。</p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/7.png"></p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/8.png"></p>
+<p>把事情搞这么麻烦的<strong>初心</strong>仅仅是想提高向表插入数据的效率又不至于数据量少的表浪费空间。</p>
+<p>XDES Entry链表：<br>表空间是由若干个区组成的，每个区都对应一个 XDES Entry 的结构，直属于表空间的区对应的 XDES Entry 结构可以分成 FREE 、 FREE_FRAG 和 FULL_FRAG 这3个链表；每个段可以附属若干个区，每个段中的区对应的 XDES Entry 结构可以分成 FREE 、 NOT_FULL 和 FULL 这3个链表。每个链表都对应一个 List Base Node 的结构，这个结构里记录了链表的头、尾节点的位置以及该链表中包含的节点数。正是因为这些链表的存在，管理这些区才变成了一件so easy的事情。</p>
+<p><strong>段的结构</strong>：</p>
+<p>和区一样，设计 InnoDB 的大叔为每个段都定义了一个 INODE Entry 结构来记录一下段中的属性。</p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/9.png"></p>
+</li>
+<li><p>系统表空间：</p>
+<p>系统表空间的结构和独立表空间基本类似，只不过由于整个MySQL进程只有一个系统表空间，在系统表空间中会额外记录一些有关整个系统信息的页面，所以会比独立表空间多出一些记录这些信息的页面。因为这个系统表空间最牛逼，相当于是表空间之首，所以它的 表空间 ID （Space ID）是 0 。</p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/10.png"></p>
+<p>Data Dictionary Header 数据字典头部信息</p>
+<p>InnoDB数据字典：</p>
+<p>为了更好的管理我们这些用户数据而不得已引入的一些额外数据，这些数据也称为 <code>元数据</code> 。InnoDB存储引擎特意定义了一些列的内部系统表（internal system table）来记录这些这些 <code>元数据</code> 。</p>
+<p>这些系统表也被称为 <strong>数据字典</strong> ，它们都是以 B+ 树的形式保存在系统表空间的某些页面中，其中 SYS_TABLES 、 SYS_COLUMNS 、 SYS_INDEXES 、 SYS_FIELDS 这四个表尤其重要，称之为基本系统表（basic system tables）</p>
+<p>Data Dictionary Header页面<br>只要有了上述4个基本系统表，也就意味着可以获取其他系统表以及用户定义的表的所有元数据。</p>
+</li>
+<li><p>系统表总结图：</p>
+<p><img src="/my_images/%E3%80%8AMySQL%E6%98%AF%E6%80%8E%E6%A0%B7%E8%BF%90%E8%A1%8C%E7%9A%84%EF%BC%9A%E4%BB%8E%E6%A0%B9%E5%84%BF%E4%B8%8A%E7%90%86%E8%A7%A3MySQL%E3%80%8B%E7%AC%94%E8%AE%B0/11.png"></p>
+</li>
+</ul>
+<h2 id="10-条条大路通罗马-单表访问方法"><a href="#10-条条大路通罗马-单表访问方法" class="headerlink" title="10. 条条大路通罗马-单表访问方法"></a>10. 条条大路通罗马-单表访问方法</h2><p>- </p>
+<h2 id="11-n"><a href="#11-n" class="headerlink" title="11. n"></a>11. n</h2><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]:<a href="https://juejin.cn/book/6844733769996304392">https://juejin.cn/book/6844733769996304392</a>	“掘金小册”</p>
 ]]></content>
       <categories>
         <category>数据库</category>
